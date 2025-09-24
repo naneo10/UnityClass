@@ -33,7 +33,7 @@ public class PlayerController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector3 move = new Vector3(horizontal, 0.0f, vertical);
+        Vector3 move = new Vector3(horizontal, 0.0f, vertical).normalized;
 
         rb.velocity = move * moveSpeed + new Vector3(0.0f, rb.velocity.y, 0.0f);
     }
