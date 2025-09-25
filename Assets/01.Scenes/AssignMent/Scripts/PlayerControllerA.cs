@@ -2,10 +2,17 @@ using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class PlayerController_A : MonoBehaviour
+public class PlayerControllerA : MonoBehaviour
 {
     private Rigidbody playerRigid;
-    private float moveSpeed = 5.0f;
+    [SerializeField]private float moveSpeed = 5.0f;
+
+    [SerializeField] private GameObject bulletPerfab;
+
+    private float spawnRateMin = 1.0f;
+    private float spawnRateMax = 3.0f;
+
+    private float spawnRate;
 
     private float horizontal;
     private float vertical;
@@ -17,6 +24,9 @@ public class PlayerController_A : MonoBehaviour
 
     private void Start()
     {
+        spawnRate = Random.Range(spawnRateMin, spawnRateMax);
+
+        StartCoroutine(SpawnBulletCo());
     }
 
     void Update()
@@ -43,8 +53,28 @@ public class PlayerController_A : MonoBehaviour
         transform.rotation = Quaternion.Lerp(currentRotation, targetRotation, Time.deltaTime * moveSpeed);
     }
 
+    private IEnumerator SpawnBulletCo()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(spawnRate);
+
+            GameObject go = Instantiate(bulletPerfab, transform.position, Quaternion.identity);
+
+            if (go.TryGetComponent<BulletB>(out BulletB bulletb))
+            {
+                bulletb.Shot(transform.forward, 18.0f);
+            }
+
+            spawnRate = Random.Range(spawnRateMin, spawnRateMax);
+        }
+    }
+
     public void Die()
     {
         gameObject.SetActive(false);
+
+        GameManagerA gameManagerA = FindObjectOfType<GameManagerA>();
+        gameManagerA.EndGame();
     }
 }
