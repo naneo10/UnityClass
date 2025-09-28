@@ -9,13 +9,19 @@ public class PlayerControllerA : MonoBehaviour
 
     [SerializeField] private GameObject bulletPerfab;
 
-    private float spawnRateMin = 1.0f;
-    private float spawnRateMax = 3.0f;
+    private float spawnRateMin = 0.1f;
+    private float spawnRateMax = 0.3f;
 
     private float spawnRate;
 
     private float horizontal;
     private float vertical;
+
+    //Ãß°¡
+    private int fanCount = 4;
+    private float fanDeg = 5.0f;
+
+    private int TypeNum;
 
     private void Awake()
     {
@@ -25,6 +31,8 @@ public class PlayerControllerA : MonoBehaviour
     private void Start()
     {
         spawnRate = Random.Range(spawnRateMin, spawnRateMax);
+        TypeNum = Random.Range(1, 3);
+
 
         StartCoroutine(SpawnBulletCo());
     }
@@ -50,7 +58,7 @@ public class PlayerControllerA : MonoBehaviour
 
         if (horizontal == 0 && vertical == 0) return;
 
-        transform.rotation = Quaternion.Lerp(currentRotation, targetRotation, Time.deltaTime * moveSpeed);
+        transform.rotation = Quaternion.Slerp(currentRotation, targetRotation, Time.deltaTime * moveSpeed);
     }
 
     private IEnumerator SpawnBulletCo()
@@ -58,23 +66,51 @@ public class PlayerControllerA : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(spawnRate);
-
-            GameObject go = Instantiate(bulletPerfab, transform.position, Quaternion.identity);
-
-            if (go.TryGetComponent<BulletB>(out BulletB bulletb))
+            switch(TypeNum)
             {
-                bulletb.Shot(transform.forward, 18.0f);
+                case 1:
+                    {
+                        SpawnShot(transform.forward, 15.0f);
+                    }
+                    break;
+                case 2:
+                    {
+                        FanShot(transform.forward, 15.0f);
+                    }
+                    break;
             }
 
             spawnRate = Random.Range(spawnRateMin, spawnRateMax);
+            TypeNum = Random.Range(1, 3);
         }
     }
 
+    private void SpawnShot(Vector3 pos, float speed)
+    {
+        GameObject go = Instantiate(bulletPerfab, transform.position, Quaternion.identity);
+
+        if (go.TryGetComponent<BulletB>(out BulletB bulletb))
+        {
+            bulletb.Shot(pos, speed);
+        }
+    }
+
+    private void FanShot(Vector3 pos, float speed)
+    {
+        int half = fanCount / 2;
+        for (int i = -half; i <= half; i++)
+        {
+            float angle = i * fanDeg;
+
+            Vector3 position = Quaternion.Euler(0, angle, 0) * pos;
+            SpawnShot(position, speed);
+        }
+    }
     public void Die()
     {
         gameObject.SetActive(false);
 
         GameManagerA gameManagerA = FindObjectOfType<GameManagerA>();
-        gameManagerA.EndGame();
+        gameManagerA.LoseGame();
     }
 }

@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class EnemyA : MonoBehaviour
+public class EnemyB : MonoBehaviour
 {
     //√—æÀ «¡∏Æ∆’(¿ŒΩ∫∆Â≈Õø°º≠ «“¥Á)
     [SerializeField] private GameObject bulletPrefab;
@@ -41,7 +41,7 @@ public class EnemyA : MonoBehaviour
 
     private void Update()
     {
-        transform.RotateAround(target.position, Vector3.up, 12.0f * Time.deltaTime);
+        transform.RotateAround(target.position, Vector3.down, 12.0f * Time.deltaTime);
     }
     private IEnumerator SpawnBulletCo()
     {
@@ -77,7 +77,7 @@ public class EnemyA : MonoBehaviour
         }
     }
 
-    private void FireFan (Vector3 pos, Vector3 dir, float speed)
+    private void FireFan(Vector3 pos, Vector3 dir, float speed)
     {
         int half = fanCount / 2;
         for (int i = -half; i <= half; i++)
@@ -88,7 +88,6 @@ public class EnemyA : MonoBehaviour
             SpawnShot(pos, direction, speed);
         }
     }
-
     public void Kill()
     {
         gameObject.SetActive(false);

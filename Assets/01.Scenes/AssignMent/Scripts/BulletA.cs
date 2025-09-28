@@ -12,7 +12,7 @@ public class BulletA : MonoBehaviour
 
     private void Start()
     {
-        Destroy(gameObject, 4.0f);
+        Destroy(gameObject, 5.0f);
     }
 
     void OnTriggerEnter(Collider other)

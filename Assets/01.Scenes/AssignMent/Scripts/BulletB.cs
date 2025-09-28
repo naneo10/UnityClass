@@ -12,21 +12,30 @@ public class BulletB : MonoBehaviour
 
     private void Start()
     {
-        Destroy(gameObject, 4.0f);
+        Destroy(gameObject, 5.0f);
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("EnemyA"))
         {
             if (other.TryGetComponent(out EnemyA enemyA))
             {
-                enemyA.Die();
-                Destroy(gameObject);
+                gameObject.SetActive(false);
+                enemyA.Kill();
+                //Destroy(gameObject);
+            }
+        }
+        if (other.CompareTag("EnemyA"))
+        {
+            if (other.TryGetComponent(out EnemyB enemyB))
+            {
+                gameObject.SetActive(false);
+                enemyB.Kill();
+                //Destroy(gameObject);
             }
         }
     }
-
     public void Shot(Vector3 dir, float speed)
     {
         moveSpeed = speed;

@@ -1,23 +1,40 @@
+using Palmmedia.ReportGenerator.Core;
 using System;
 using System.Collections;
+using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManagerA : MonoBehaviour
 {
+    [SerializeField] private GameObject gameWinText;
     [SerializeField] private GameObject gameOverText;
-    [SerializeField] private TextMeshProUGUI TimeText;
-    [SerializeField] private TextMeshProUGUI bestClearTimeText;
+    [SerializeField] private TextMeshProUGUI timeText;
+    [SerializeField] private TextMeshProUGUI ClearTimeText;
     //Enemy
-    [SerializeField] private GameObject[] enemys;
+    [SerializeField] private GameObject[] enemies;
 
-    private float timePassed; //총 킬 카운트
+    private float timePassed; //시간체크
+    private bool isGameWin; //승리 여부
     private bool isGameOver; //게임오버 여부
+
+    private int totalEnemyCount = 20; //전체 적 수
+    private int inactiveCount = 0; //꺼진 적 수
+
+    private static GameManagerA instance;
+
+    void Awake()
+    {
+        instance = this;
+    }
 
     void Start()
     {
         timePassed = 0.0f;
+        isGameWin = false;
         isGameOver = false;
     }
 
@@ -27,38 +44,60 @@ public class GameManagerA : MonoBehaviour
         {
             Restart();
         }
+        else if (isGameWin)
+        {
+            Restart();
+        }
 
         //지나간 시간
         timePassed += Time.deltaTime;
-        TimeText.text = "Time : " + (int)timePassed;
-
+        timeText.text = "Time : " + (int)timePassed;
     }
 
+    public static void EnemyDisabled()
+    {
+        instance.inactiveCount++;
+
+        Debug.Log($"비활성화된 Enemy 수 {instance.inactiveCount}");
+
+        if (instance.inactiveCount == instance.totalEnemyCount)
+        {
+            //CS0120 : https://itmining.tistory.com/128
+            GameManagerA p = new GameManagerA();
+            p.WinGame();
+        }
+    }
+    
     void Restart()
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("0925Assignment");
         }
     }
 
-    public void EndGame()
+    public void LoseGame()
     {
+        float ClearTime = PlayerPrefs.GetFloat("ClearTime");
+        //Lose
         isGameOver = true;
         StartCoroutine(GameOverTextCo());
 
-        float bestClearTime = PlayerPrefs.GetFloat("BestClearTime");
+        ClearTimeText.text = "Clear Time : " + (int)ClearTime;
+        
+    }
 
-        if (enemys.Length == 0)
-        {
-            if(timePassed > bestClearTime)
-            {
-                bestClearTime = timePassed;
-                PlayerPrefs.SetFloat("BestClearTime", bestClearTime);
-            }
-        }
+    public void WinGame()
+    {
+        float ClearTime = PlayerPrefs.GetFloat("ClearTime");
 
-        bestClearTimeText.text = "Best Clear Time : " + (int)bestClearTime;
+        //Win
+        isGameWin = true;
+
+        ClearTime = timePassed;
+        PlayerPrefs.SetFloat("ClearTime", ClearTime);
+        ClearTimeText.text = "Clear Time : " + (int)ClearTime;
+        StartCoroutine(GameWinTextCo());
     }
 
     IEnumerator GameOverTextCo()
@@ -67,14 +106,19 @@ public class GameManagerA : MonoBehaviour
         {
             yield break;
         }
-        if (enemys.Length > 0)
+        for (int i = 0; i < enemies.Length; i++)
         {
-            for (int i = 0; i < enemys.Length; i++)
-            {
-                enemys[i].SetActive(false);
-            }
+            enemies[i].SetActive(false);
         }
         gameOverText.SetActive(true);
-        
+    }
+
+    IEnumerator GameWinTextCo()
+    {
+        if(!gameWinText.TryGetComponent(out TextMeshProUGUI text))
+        {
+            yield break;
+        }
+        gameWinText.SetActive(true);
     }
 }
