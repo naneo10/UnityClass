@@ -1,6 +1,4 @@
 
-using Unity.Collections;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class Jump : MonoBehaviour
