@@ -26,7 +26,7 @@ public class ItemSpawner : MonoBehaviour
             center = transform;
         }
 
-        for(int i = 0;i<startSpawncount;i++)
+        for(int i = 0; i < startSpawncount; i++)
         {
             ItemSpawn();
         }

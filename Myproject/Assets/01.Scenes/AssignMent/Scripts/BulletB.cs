@@ -21,18 +21,20 @@ public class BulletB : MonoBehaviour
         {
             if (other.TryGetComponent(out EnemyA enemyA))
             {
-                gameObject.SetActive(false);
+                //gameObject.SetActive(false);
                 enemyA.Kill();
                 //Destroy(gameObject);
+                Debug.Log("A 다운");
             }
         }
         if (other.CompareTag("EnemyA"))
         {
             if (other.TryGetComponent(out EnemyB enemyB))
             {
-                gameObject.SetActive(false);
+                //gameObject.SetActive(false);
                 enemyB.Kill();
                 //Destroy(gameObject);
+                Debug.Log("B 다운");
             }
         }
     }

@@ -12,13 +12,12 @@ public class PlayerController : MonoBehaviour
 
     //===총알관련===
     //프리팹
-
-    //이펙트
-
-    [SerializeField] private float fireRate = 0.2f; //발사간격
-    [SerializeField] float nextFireTime; //다음 발사 가능 시각
+    public Bullet bulletPrefab; //발사할 총알 프리팹
+    public Effect effectPrefab; //이펙트 프리팹
 
     public Transform firePoint; //총알이 나가는 위치
+    [SerializeField] public float fireRate = 0.2f; //발사간격
+    [SerializeField] public float nextFireTime; //다음 발사 가능 시간
 
     void Awake()
     {
@@ -29,6 +28,8 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         //풀 매니저에 총알과 이펙트 풀 등록
+        Managers.Pool.CreatePool(bulletPrefab, 10);
+        Managers.Pool.CreatePool(effectPrefab, 10);
     }
 
     void Update()
@@ -78,7 +79,9 @@ public class PlayerController : MonoBehaviour
     void Fire()
     {
         //1.풀에서 총알을 가져오고
+        Bullet bullet = Managers.Pool.GetFromPool(bulletPrefab);
 
         //2.총알의 위치랑 회전을 초기화
+        bullet.transform.SetPositionAndRotation(firePoint.position, Quaternion.identity);
     }
 }

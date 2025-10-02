@@ -30,6 +30,7 @@ public class Effect : MonoBehaviour
         //현재 애니메이션의 재생 길이만큼 기다려라
         yield return new WaitForSeconds(anim.GetCurrentAnimatorStateInfo(0).length); //.length 애니메이션의 총 재생 시간
 
-        //풀에 다시 반환하자 (내일 추가)
+        //애니메이션이 끝나면 풀에 다시 반환하자
+        Managers.Pool.ReturnPool(this);
     }
 }
