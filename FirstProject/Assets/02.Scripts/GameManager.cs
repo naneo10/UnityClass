@@ -7,12 +7,11 @@ public class GameManager : MonoBehaviour
 {
     #region config
     //ÄÚÀÎ
-    private int coin = 0;
+    public int coin = 0;
 
     [Header("UI")]
     [SerializeField] private TextMeshProUGUI playTime;
     [SerializeField] private TextMeshProUGUI clearTime;
-    [SerializeField] private TextMeshProUGUI bestClearTime;
     [SerializeField] private TextMeshProUGUI coinCount;
     [SerializeField] private GameObject clear;
 
@@ -37,7 +36,6 @@ public class GameManager : MonoBehaviour
         playTime.text = "Time : " + (int)time;
 
         coinCount.text = "" + coin;
-
     }
 
     #region Method
@@ -58,6 +56,8 @@ public class GameManager : MonoBehaviour
     {
         gameClear = true;
         GameClearText();
+
+        clearTime.text = "ClearTime : " + (int)time;
     }
 
     public void GameClearText()

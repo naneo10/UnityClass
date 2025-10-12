@@ -20,13 +20,19 @@ public class ClearCheck : MonoBehaviour
     public void RealClear()
     {
         goleTouch = Physics2D.OverlapCircle(ClearBox.position, ClearRadius, clearMask);
+        GameManager gameManager = FindObjectOfType<GameManager>();
 
         if(goleTouch != null)
         {
-            gameObject.SetActive(false);
-
-            GameManager gameManager = FindObjectOfType<GameManager>();
-            gameManager.GameClear();
+            if(gameManager.coin == 20)
+            {
+                gameObject.SetActive(false);
+                gameManager.GameClear();
+            }
+            else
+            {
+                return;
+            }
         }
     }
 

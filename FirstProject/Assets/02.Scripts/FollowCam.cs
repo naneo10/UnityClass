@@ -5,7 +5,7 @@ public class FollowCam : MonoBehaviour
     [Header("¼³Á¤")]
     public Transform target;
 
-    [SerializeField] private Vector2 offset = new Vector2(5.0f, 4.0f);
+    [SerializeField] private Vector2 offset = new Vector2(0.0f, 3.0f);
     [SerializeField] private float followSpeed = 5.0f;
 
     private void LateUpdate()

@@ -6,8 +6,8 @@ public class CoinPick : MonoBehaviour
     #region config
     [Header("자석")]
     [SerializeField] private float magnetRadius = 1.0f;
-    [SerializeField] private float pullSpeed = 5.0f;
-    [SerializeField] private float collectDistance = 0.2f;
+    [SerializeField] private float pullSpeed = 7.0f;
+    [SerializeField] private float collectDistance = 0.5f;
 
     [Header("코인 레이어")]
     [SerializeField] LayerMask itemLayer;
