@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class Player : MonoBehaviour
     //입력용
     public float inputX;
     public bool inGrounded;
+    private float viewHeight;
 
     [Header("이동/점프")]
     public float moveSpeed = 5.0f;
@@ -25,9 +27,16 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
     }
+
+    private void Start()
+    {
+        viewHeight = Camera.main.orthographicSize * 2;
+    }
+
     void Update()
     {
         Jump();
+        Respawn();
     }
 
     private void FixedUpdate()
@@ -72,6 +81,14 @@ public class Player : MonoBehaviour
 
         Gizmos.color = inGrounded ? Color.green : Color.red;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+    }
+
+    public void Respawn()
+    {
+        if(groundCheck.position.y < -viewHeight)
+        {
+            SceneManager.LoadScene("SampleScene");
+        }
     }
     #endregion
 }
