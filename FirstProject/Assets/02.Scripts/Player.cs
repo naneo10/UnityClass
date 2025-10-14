@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,7 @@ public class Player : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private Collider2D hit;
+    private Collider2D crash;
     private Animator anim;
 
     //입력용
@@ -23,6 +25,12 @@ public class Player : MonoBehaviour
     public Transform groundCheck;
     [SerializeField] private float groundCheckRadius = 0.15f;
     [SerializeField] private LayerMask groundLayer;
+
+    [Header("충돌체크")]
+    public Transform crashCheck;
+    [SerializeField] private LayerMask crashLayer;
+    public int crashPower = 5;
+    public bool isCrash = false;
 
     //애니메이션 해시
     private static readonly int moveHash = Animator.StringToHash("Speed");
@@ -58,6 +66,7 @@ public class Player : MonoBehaviour
     #region Method
     public void Move()
     {
+        if (isCrash) return;
         //GetAxis && GetAxisRaw : https://onecoke.tistory.com/entry/%EC%9C%A0%EB%8B%88%ED%8B%B0-GetAxis%EC%99%80-GetAxisRaw
         inputX = Input.GetAxisRaw("Horizontal");
         rb.velocity = new Vector2(inputX * moveSpeed, rb.velocity.y);
@@ -111,6 +120,31 @@ public class Player : MonoBehaviour
 
         Gizmos.color = inGrounded ? Color.green : Color.red;
         Gizmos.DrawWireSphere(groundCheck.position, groundCheckRadius);
+
+        Gizmos.color = Color.gray;
+        Gizmos.DrawWireCube(crashCheck.position, crashCheck.lossyScale);
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        crash = Physics2D.OverlapBox(crashCheck.position, transform.lossyScale, crashLayer);
+
+        if(collision.gameObject.CompareTag("Crash") && !inGrounded && crash != null)
+        {
+            StartCoroutine(CrashDelay());
+
+            Debug.Log("충돌");
+            float dirX = transform.position.x - collision.transform.position.x > 0 ? 0.2f : -0.2f;
+            rb.AddForce(new Vector2(dirX, (0)) * crashPower, ForceMode2D.Impulse);
+        }
+    }
+
+    IEnumerator CrashDelay()
+    {
+        isCrash = true;
+        yield return new WaitForSeconds(0.3f);
+        isCrash = false;
+        Debug.Log("딜레이");
     }
 
     public void Respawn()
