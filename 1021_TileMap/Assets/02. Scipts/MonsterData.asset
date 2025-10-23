@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 954c42ce96b954449877aecfd4930ee9, type: 3}
+  m_Name: MonsterData
+  m_EditorClassIdentifier: 
+  monsterName: Mushroom
+  maxHp: 5
+  moveSpeed: 3
+  prefab: {fileID: 5828967111644562295, guid: 5428e5c533fc9724aa3da73062b1addb, type: 3}

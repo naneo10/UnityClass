@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 954c42ce96b954449877aecfd4930ee9, type: 3}
+  m_Name: MonsterData 1
+  m_EditorClassIdentifier: 
+  monsterName: troll
+  maxHp: 15
+  moveSpeed: 1
+  prefab: {fileID: 4001437450914484839, guid: 6b6d0bb38b948294bacacc058b58edcd, type: 3}
