@@ -10,4 +10,5 @@ public class ItemDataSO : ScriptableObject
     public int skillDamage;
     public int speed;
     public string description;
+    public Sprite itemImage;
 }
