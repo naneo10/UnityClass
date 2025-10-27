@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStatus
 {
-    public int hp = 300;
-    public int mp = 200;
+    public float hp = 300;
+    public float mp = 200;
     public int damage = 20;
     public int skillDamage = 0;
     public int speed = 10;
@@ -16,6 +17,10 @@ public class Player : MonoBehaviour
     private float moveSpeed = 5.0f;
     private float inputX;
     private float inputY;
+
+    [Header("UI/Status")]
+    [SerializeField] private Image hpImage;
+    [SerializeField] private Image mpImage;
 
     //ÄÄÆ÷³ÍÆ®
     private Rigidbody2D rb;
@@ -66,6 +71,16 @@ public class Player : MonoBehaviour
         {
             sr.flipX = false;
         }
+    }
+
+    private void ChangeHPBarAmount(float hp)
+    {
+        hpImage.fillAmount = hp;
+    }
+
+    private void ChangeMPBarAmout(float mp)
+    {
+        mpImage.fillAmount = mp;
     }
     #endregion
 }
