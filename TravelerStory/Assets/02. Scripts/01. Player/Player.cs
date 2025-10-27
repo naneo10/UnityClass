@@ -1,5 +1,14 @@
 using UnityEngine;
 
+public class PlayerStatus
+{
+    public int hp = 300;
+    public int mp = 200;
+    public int damage = 20;
+    public int skillDamage = 0;
+    public int speed = 10;
+}
+
 public class Player : MonoBehaviour
 {
     #region field

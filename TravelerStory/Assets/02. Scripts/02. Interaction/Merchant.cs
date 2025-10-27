@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class Merchant : MonoBehaviour
 {
-    #region
+    #region field
     [SerializeField] private RectTransform interactionIcon;
 
-    private bool rangeIn = false;
+    private bool rangeIn;
     #endregion
 
     void Awake()
