@@ -21,7 +21,7 @@ public enum ItemType //아이템 유형
 
     //장비 아이템이 아닌 아이템들(소모, 기타, 재료, 퀘스트 아이템 등)
     Etc                                 = 0b1000000, //64
-    Consumalbe                          = 0b10000000, //128
+    Consumable                          = 0b10000000, //128
     Ingredient                          = 0b100000000, //256
     Quest                               = 0b1000000000, //512
 }

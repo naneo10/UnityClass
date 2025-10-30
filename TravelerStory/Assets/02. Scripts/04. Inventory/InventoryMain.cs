@@ -1,5 +1,7 @@
 using Unity.VisualScripting;
+using System.Collections.Generic;
 using UnityEngine;
+using JetBrains.Annotations;
 
 /// <summary>
 /// 여러 아이템을 담을 가장 기본적인 인벤토리
@@ -60,5 +62,15 @@ public class InventoryMain : Inventory
 
         //커서 비활성화
         UtilityManager.Instance.TryLockCursor();
+    }
+
+    public List<InventorySlot>[] GetAllItems()
+    {
+
+    }
+
+    public void AcquireItem(ItemPickUp mCurrentItem)
+    {
+
     }
 }
