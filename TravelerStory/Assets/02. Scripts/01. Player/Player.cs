@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     [Header("UI/Status")]
     [SerializeField] private Image hpImage;
     [SerializeField] private Image mpImage;
+    public int gold = 0;
 
     //ÄÄÆ÷³ÍÆ®
     private Rigidbody2D rb;

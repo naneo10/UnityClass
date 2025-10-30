@@ -15,6 +15,7 @@ MonoBehaviour:
   ID: 0
   itemName: Sword
   type: melee
+  price: 100
   damage: 20
   skillDamage: 0
   speed: 5

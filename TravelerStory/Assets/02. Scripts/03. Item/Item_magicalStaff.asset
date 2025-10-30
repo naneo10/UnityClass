@@ -15,6 +15,7 @@ MonoBehaviour:
   ID: 2
   itemName: magicalStaff
   type: magic
+  price: 150
   damage: 5
   skillDamage: 30
   speed: -5

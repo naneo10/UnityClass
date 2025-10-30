@@ -15,6 +15,7 @@ MonoBehaviour:
   ID: 1
   itemName: bow
   type: ranged
+  price: 100
   damage: 15
   skillDamage: 0
   speed: 10
