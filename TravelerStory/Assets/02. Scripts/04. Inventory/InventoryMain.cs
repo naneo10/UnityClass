@@ -27,7 +27,7 @@ public class InventoryMain : Inventory
     private void TryOpenInventory()
     {
         //옵션이 켜져있는 경우 비활성화
-        if (GameMenuManager.IsOptionActive) { return; }
+        if (GameMenuManager.Instance.IsOptionActive) { return; }
 
         if (Input.GetKeyDown(KeyManager.Instance.GetKeyCode("Inventory")))
         {
@@ -47,7 +47,7 @@ public class InventoryMain : Inventory
         IsInventoryActive = true;
 
         //커서 활성화
-        UtilityManager.UnlockCursor();
+        UtilityManager.Instance.UnlockCursor();
     }
 
     /// <summary>
@@ -59,6 +59,6 @@ public class InventoryMain : Inventory
         IsInventoryActive = false;
 
         //커서 비활성화
-        UtilityManager.TryLockCursor();
+        UtilityManager.Instance.TryLockCursor();
     }
 }

@@ -26,7 +26,7 @@ public enum ItemType //아이템 유형
     Quest                               = 0b1000000000, //512
 }
 
-[CreateAssetMenu(fileName = "Item_", menuName = "SO/ItemData")]
+[CreateAssetMenu(fileName = "Item_", menuName = "Add Item/Item")]
 public class ItemDataSO : ScriptableObject
 {
     [Header("고유한 아이템의 ID(중복불가)")]

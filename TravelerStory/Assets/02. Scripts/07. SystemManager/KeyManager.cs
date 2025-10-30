@@ -1,21 +1,26 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using Unity.VisualScripting;
 using UnityEngine;
 //설치방법 : https://m.blog.naver.com/yeo2697/222083534021
+/*
+Newtonsoft.Json 설치했지만 인식되지 않음
+1.비쥬얼 스튜디오 : 솔루션 탐색기 -> 프로젝트 속성 -> 프로젝트(P) -> 참조 추가 -> Newtonsoft.Json 추가
+2.유니티 : Assets/Plugins/Newtonsoft.Json 복사
+*/
 using Newtonsoft.Json;
 using System.Text;
 
+#region 오류 해결 1
 //CS0709, CS0311은 상속과 제네릭 제약 조건 관련 오류
 //sealed 클래스는 상속할 수 없습니다.
 //Singleton<T>클래스가 sealed로 선언되어 있으면,
 //상속하려는 KeyManager는 오류 발생
 //유니티 MonoBehaviour는 new()로 생성할 수 없기에 오류발생
+#endregion
 public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    private static T _instance;
-    private static T Instance
+    public static T _instance;
+    public static T Instance
     {
         get
         {

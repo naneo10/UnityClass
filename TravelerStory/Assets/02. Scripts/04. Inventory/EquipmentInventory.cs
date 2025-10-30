@@ -21,23 +21,23 @@ public class EquipmentInventory : Inventory
     void Update()
     {
         //옵션이 켜져있는 경우 비활성화
-        if (GameMenuManager.IsOptionActive) { return; }
+        if (GameMenuManager.Instance.IsOptionActive) { return; }
 
-        if (Input.GetKeyDown(keyManager.Instance.GetKeyCode("Equipment")))
+        if (Input.GetKeyDown(KeyManager.Instance.GetKeyCode("Equipment")))
         {
             if (mInventoryBase.activeInHierarchy)
             {
                 mInventoryBase.SetActive(false);
                 IsInventoryActive = false;
 
-                UtilityManager.TrayLockCursor();
+                UtilityManager.Instance.TryLockCursor();
             }
             else
             {
                 mInventoryBase.SetActive(true);
                 IsInventoryActive = true;
 
-                UtilityManager.UnlockCursor();
+                UtilityManager.Instance.UnlockCursor();
             }
         }
     }
