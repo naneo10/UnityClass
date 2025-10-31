@@ -26,12 +26,12 @@ public class Inventory : MonoBehaviour
         int i = 0;
         for (; i < items.Count && i < slots.Length; i++)
         {
-            slots[i].item = items[i];
+            slots[i].Item = items[i];
         }
 
         for (; i < slots.Length; i++)
         {
-            slots[i].item = null;
+            slots[i].Item = null;
         }
     }
 
