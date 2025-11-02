@@ -47,4 +47,13 @@ public class Inventory : MonoBehaviour
             print("슬롯이 가득 차 있습니다.");
         }
     }
+
+    public void RemoveItem(ItemDataSO _item)
+    {
+        if (_item == null) return; //방어코드
+
+        //https://twd0622.tistory.com/95
+        items.Remove(_item);
+        FreshSlot();
+    }
 }

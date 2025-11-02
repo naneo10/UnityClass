@@ -13,4 +13,6 @@ public class ItemDataSO : ScriptableObject
     public bool expendables;
     public int recoveryHp;
     public int recoveryMp;
+
+    public int counter;
 }

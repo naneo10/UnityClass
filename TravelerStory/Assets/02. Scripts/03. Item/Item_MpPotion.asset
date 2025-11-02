@@ -20,3 +20,4 @@ MonoBehaviour:
   expendables: 1
   recoveryHp: 0
   recoveryMp: 100
+  counter: 1
