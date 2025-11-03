@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    //리스트에 추가하는 식으로 아이탬 획득
+    //리스트에 추가하는 식으로 아이템 획득
     public List<ItemDataSO> items;
 
     [SerializeField] Transform slotParent;
@@ -35,11 +35,11 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void AddItem(ItemDataSO _item)
+    public void AddItem(ItemDataSO item)
     {
         if (items.Count < slots.Length)
         {
-            items.Add(_item);
+            items.Add(item);
             FreshSlot();
         }
         else
@@ -48,12 +48,11 @@ public class Inventory : MonoBehaviour
         }
     }
 
-    public void RemoveItem(ItemDataSO _item)
+    public void RemoveItem(ItemDataSO item)
     {
-        if (_item == null) return; //방어코드
+        if (item == null) return; //방어코드
 
-        //https://twd0622.tistory.com/95
-        items.Remove(_item);
+        items.Remove(item);
         FreshSlot();
     }
 }

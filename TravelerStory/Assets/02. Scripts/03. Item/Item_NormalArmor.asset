@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 317243d80bc1cde48a4f5d2382fe242a, type: 3}
-  m_Name: Item_SkillBook
+  m_Name: Item_NormalArmor
   m_EditorClassIdentifier: 
-  itemName: SkillBook
-  damage: 50
-  speed: 30
-  price: 500
-  itemimage: {fileID: 21300000, guid: ae496f5dad56ea645b72d374a0376368, type: 3}
+  itemName: NomalArmor
+  damage: 0
+  speed: 10
+  price: 0
+  itemimage: {fileID: 21300000, guid: 2f1eaeeaad36ee5469eff7ff158f37ba, type: 3}
   expendables: 0
   recoveryHp: 0
   recoveryMp: 0
   counter: 0
   equipment: 1
   helmet: 0
-  armor: 0
+  armor: 1
   gloves: 0
   pants: 0
   shoes: 0
-  weapone: 1
+  weapone: 0

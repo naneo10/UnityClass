@@ -9,19 +9,21 @@ public class InteractionManager : MonoBehaviour
     public ItemDataSO itemDataSO;
 
     public Inventory cInventory;
+    public EquipMent cEquipMent;
 
     [Header("인벤토리/스킬/장비")]
     [SerializeField] private GameObject inventory;
-    [SerializeField] private GameObject skill;
     [SerializeField] private GameObject Equipment;
+    [SerializeField] private GameObject skill;
 
     //사용조건 충족 확인
     public bool useItem;
-    #endregion
 
+    //입력 키 값
     private bool inputI;
     private bool inputK;
     private bool inputP;
+    #endregion
 
     private void Awake()
     {
@@ -43,12 +45,17 @@ public class InteractionManager : MonoBehaviour
     private void Active()
     {
         inputI = Input.GetKeyDown(KeyCode.I);
-        inputK = Input.GetKeyDown(KeyCode.K);
         inputP = Input.GetKeyDown(KeyCode.P);
+        inputK = Input.GetKeyDown(KeyCode.K);
 
         if (inputI)
         {
             inventory.SetActive(!inventory.activeSelf);
+        }
+
+        if (inputP)
+        {
+            Equipment.SetActive(!Equipment.activeSelf);
         }
     }
 
@@ -64,7 +71,6 @@ public class InteractionManager : MonoBehaviour
             {
                 slot.Item.counter -= 1;
             }
-                slot.Item.counter -= 1;
 
             if (slot.Item.counter <= 0)
             {
@@ -88,9 +94,14 @@ public class InteractionManager : MonoBehaviour
         }
     }
 
-    public void UseEquipment()
+    public void UseEquipment(Slot slot)
     {
+        cEquipMent.AddEquipement(slot.Item);
+    }
 
+    public void UnEquipment(Slot slot)
+    {
+        cEquipMent.RemoveEquipment(slot.Item);
     }
 
     public void OnSlotClicked(Slot slot, PointerEventData eventData)
@@ -114,16 +125,16 @@ public class InteractionManager : MonoBehaviour
                         //HP,MP Potion
                         UseItem(slot);
                     }
-                    else if (!slot.Item.expendables)
+                    else if (slot.Item.equipment)
                     {
                         //Equirpment
-                        UseEquipment();
+                        UseEquipment(slot);
                     }
                 }
                 break;
             case PointerEventData.InputButton.Right:
                 {
-                    Debug.Log($"Right-clicked item: {slot.Item.itemName}");
+                    UnEquipment(slot);
                 }
                 break;
             default:

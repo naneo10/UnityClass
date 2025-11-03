@@ -17,3 +17,14 @@ MonoBehaviour:
   speed: 10
   price: 300
   itemimage: {fileID: 21300000, guid: 5fd50594014b70e48bd6993443d46b32, type: 3}
+  expendables: 0
+  recoveryHp: 0
+  recoveryMp: 0
+  counter: 0
+  equipment: 1
+  helmet: 0
+  armor: 0
+  gloves: 0
+  pants: 0
+  shoes: 0
+  weapone: 1
