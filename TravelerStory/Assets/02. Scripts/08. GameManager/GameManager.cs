@@ -1,9 +1,10 @@
 using UnityEngine;
 
-public class Monster : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     #region field
-    [SerializeField] public GameObject[] monsters;
+    [SerializeField] public Player player;
+    [SerializeField] public Monster monster;
     #endregion
 
     void Start()

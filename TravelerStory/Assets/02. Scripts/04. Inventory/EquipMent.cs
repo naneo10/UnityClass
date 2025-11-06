@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class EquipMent : MonoBehaviour
@@ -11,20 +13,16 @@ public class EquipMent : MonoBehaviour
     public Inventory inventory;
 
     [Header("장비 슬롯")]
-    [SerializeField] Slot helmet;
-    [SerializeField] Slot armor;
-    [SerializeField] Slot gloves;
-    [SerializeField] Slot pants;
-    [SerializeField] Slot shoes;
-    [SerializeField] Slot weapone;
+    [SerializeField] EquipSlot helmet;
+    [SerializeField] EquipSlot armor;
+    [SerializeField] EquipSlot gloves;
+    [SerializeField] EquipSlot pants;
+    [SerializeField] EquipSlot shoes;
+    [SerializeField] EquipSlot weapone;
     #endregion
 
     void Awake()
     {
-        for (int i = 0; i < equipment.Count; i++)
-        {
-            Debug.Log($"equipment[{i}] : {equipment[i].name}");
-        }
         FreshList();
     }
 
@@ -41,31 +39,36 @@ public class EquipMent : MonoBehaviour
             (x.weapone && item.weapone)
         );
 
-        Debug.Log($"현재 duplicate에 담긴 값{duplicate}");
-
         //장비 타입 중복 여부 확인
         if (duplicate == null)
         {
             equipment.Add(item);
             inventory.items.Remove(item);
+
             inventory.FreshSlot();
             FreshList();
+            
+            EquipState(item);
         }
         //장비 타입이 중복일 경우 기존 장비는 인벤토리로
         else if (duplicate != null)
         {
             Change(item, duplicate);
-            FreshList();
-            inventory.FreshSlot();
         }
     }
 
     public void Change(ItemDataSO item, ItemDataSO duplicate)
     {
-        inventory.items.Add(duplicate); //착용하고 있던 장비 다시 인벤토리로
-        inventory.items.Remove(item); //착용되는 장비는 인벤토리에서 제거
+        inventory.AddItem(duplicate); //착용하고 있던 장비 다시 인벤토리로
+        inventory.RemoveItem(item); //착용되는 장비는 인벤토리에서 제거
+
         equipment.Remove(duplicate); //기존 착용된 장비는 제거
         equipment.Add(item); //새로 착용된 장비 추가
+
+        FreshList();
+        inventory.FreshSlot();
+
+        ChangeState(item, duplicate);
     }
 
     public void FreshList()
@@ -87,8 +90,64 @@ public class EquipMent : MonoBehaviour
     {
         inventory.items.Add(item);
         equipment.Remove(item);
+
         FreshList();
         inventory.FreshSlot();
+
+        EquipState(item);
+    }
+
+    //Any : https://kwonyeeun.tistory.com/127
+    private void EquipState(ItemDataSO item)
+    {
+        if (item.armor)
+        {
+            bool equippedArmor = equipment.Any(x => x.armor);
+
+            if (equippedArmor)
+            {
+                PlayerStatus.Instance().defense += item.defense;
+                Debug.Log($"현재 방어력 : {PlayerStatus.Instance().defense}");
+            }
+            else
+            {
+                PlayerStatus.Instance().defense -= item.defense;
+                Debug.Log($"현재 방어력 : {PlayerStatus.Instance().defense}");
+            }
+        }
+
+        if (item.weapone)
+        {
+            bool equippedWeapone = equipment.Any(x => x.weapone);
+
+            if (equippedWeapone)
+            {
+                PlayerStatus.Instance().damage += item.damage;
+                Debug.Log($"현재 공격력 : {PlayerStatus.Instance().damage}");
+            }
+            else
+            {
+                PlayerStatus.Instance().damage -= item.damage;
+                Debug.Log($"현재 공격력 : {PlayerStatus.Instance().damage}");
+            }
+        }
+    }
+
+    private void ChangeState(ItemDataSO item, ItemDataSO duplicate)
+    {
+        if (item.armor && duplicate.armor)
+        {
+            PlayerStatus.Instance().defense -= duplicate.defense;
+            PlayerStatus.Instance().defense += item.defense;
+            Debug.Log($"현재 방어력 : {PlayerStatus.Instance().defense}");
+        }
+
+        if (item.weapone && duplicate.weapone)
+        {
+            PlayerStatus.Instance().damage -= duplicate.damage;
+            PlayerStatus.Instance().damage += item.damage;
+            Debug.Log($"현재 공격력 : {PlayerStatus.Instance().damage}");
+        }
     }
     #endregion
 }

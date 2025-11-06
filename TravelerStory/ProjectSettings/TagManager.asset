@@ -41,12 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Bottom
+    uniqueID: 4189426099
+    locked: 0
+  - name: Wall
+    uniqueID: 3123954145
+    locked: 0
   - name: InteractionUI
     uniqueID: 2425651459
     locked: 0
   - name: Player&Monster&Npc
     uniqueID: 4250941897
-    locked: 0
-  - name: 
-    uniqueID: 4189426099
     locked: 0

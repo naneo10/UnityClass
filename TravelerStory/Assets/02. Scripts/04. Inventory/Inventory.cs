@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    #region field
     //리스트에 추가하는 식으로 아이템 획득
     public List<ItemDataSO> items;
 
@@ -16,11 +17,13 @@ public class Inventory : MonoBehaviour
     }
 #endif
 
+    #endregion
     void Awake()
     {
         FreshSlot();
     }
 
+    #region method
     public void FreshSlot()
     {
         int i = 0;
@@ -55,4 +58,5 @@ public class Inventory : MonoBehaviour
         items.Remove(item);
         FreshSlot();
     }
+    #endregion
 }

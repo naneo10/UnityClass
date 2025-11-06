@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -8,21 +9,33 @@ public class InteractionManager : MonoBehaviour
     public static InteractionManager Instance;
     public ItemDataSO itemDataSO;
 
+    [Header("클래스 인스턴스")]
     public Inventory cInventory;
     public EquipMent cEquipMent;
+    public Store cStore;
+    public Gold cGold;
 
     [Header("인벤토리/스킬/장비")]
     [SerializeField] private GameObject inventory;
     [SerializeField] private GameObject Equipment;
     [SerializeField] private GameObject skill;
 
+    [Header("상점")]
+    [SerializeField] public GameObject store;
+    private bool rangeIn;
+
     //사용조건 충족 확인
     public bool useItem;
+    public bool sameItem;
+    public bool useEquip = false;
 
     //입력 키 값
     private bool inputI;
     private bool inputK;
     private bool inputP;
+
+    //상호작용 키 값
+    private bool inputF;
     #endregion
 
     private void Awake()
@@ -47,6 +60,7 @@ public class InteractionManager : MonoBehaviour
         inputI = Input.GetKeyDown(KeyCode.I);
         inputP = Input.GetKeyDown(KeyCode.P);
         inputK = Input.GetKeyDown(KeyCode.K);
+        inputF = Input.GetKeyDown(KeyCode.F);
 
         if (inputI)
         {
@@ -57,9 +71,19 @@ public class InteractionManager : MonoBehaviour
         {
             Equipment.SetActive(!Equipment.activeSelf);
         }
+
+        if (inputF && rangeIn)
+        {
+            store.SetActive(!store.activeSelf);
+        }
     }
 
-    public void UseItem(Slot slot)
+    public void IsNear(bool check)
+    {
+        rangeIn = check;
+    }
+
+    private void UseItem(Slot slot)
     {
         if (slot.Item.recoveryHp > 0 && slot.Item.recoveryMp == 0)
         {
@@ -94,14 +118,9 @@ public class InteractionManager : MonoBehaviour
         }
     }
 
-    public void UseEquipment(Slot slot)
+    private void UseEquipment(Slot slot)
     {
         cEquipMent.AddEquipement(slot.Item);
-    }
-
-    public void UnEquipment(Slot slot)
-    {
-        cEquipMent.RemoveEquipment(slot.Item);
     }
 
     public void OnSlotClicked(Slot slot, PointerEventData eventData)
@@ -127,14 +146,89 @@ public class InteractionManager : MonoBehaviour
                     }
                     else if (slot.Item.equipment)
                     {
-                        //Equirpment
                         UseEquipment(slot);
                     }
                 }
                 break;
+            default:
+                {
+                    Debug.Log("Other button clicked");
+                }
+                break;
+        }
+    }
+
+    private void UnEquipment(EquipSlot equipSlot)
+    {
+        cEquipMent.RemoveEquipment(equipSlot.Item);
+    }
+
+    public void OnEquipmentClicked(EquipSlot equipSlot, PointerEventData eventData)
+    {
+        switch(eventData.button)
+        {
             case PointerEventData.InputButton.Right:
                 {
-                    UnEquipment(slot);
+                    UnEquipment(equipSlot);
+                }
+                break;
+            default:
+                {
+                    Debug.Log("Other button clicked");
+                }
+                break;
+        }
+    }
+
+    public void ChangeSlot()
+    {
+        cStore.Change();
+    }
+
+    public void OnButtonClicked(Button button, PointerEventData eventData)
+    {
+        switch (eventData.button)
+        {
+            case PointerEventData.InputButton.Left:
+                {
+                    ChangeSlot();
+                }
+                break;
+            default:
+                {
+                    Debug.Log("Other button clicked");
+                }
+                break;
+        }
+    }
+
+    private void BuyItem(StoreSlot storeSlot)
+    {
+        if (PlayerStatus.Instance().Gold >= storeSlot.Item.price)
+        {
+            cGold.SubtractGold(storeSlot.Item.price);
+            cInventory.AddItem(storeSlot.Item);
+        }
+        else if (PlayerStatus.Instance().Gold < storeSlot.Item.price)
+        {
+            Debug.Log("골드가 부족합니다");
+            return;
+        }
+    }
+
+    public void OnStorelistClick(StoreSlot storeSlot, PointerEventData eventData)
+    {
+        if (storeSlot.Item == null)
+        {
+            Debug.Log("empty slot click");
+            return;
+        }
+
+        switch (eventData.button)
+        {
+            case PointerEventData.InputButton.Left:
+                {
+                    BuyItem(storeSlot);
                 }
                 break;
             default:

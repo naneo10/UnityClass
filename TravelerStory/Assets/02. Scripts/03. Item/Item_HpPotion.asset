@@ -15,9 +15,16 @@ MonoBehaviour:
   itemName: HpPotion
   damage: 0
   speed: 0
-  price: 0
+  price: 50
   itemimage: {fileID: 21300000, guid: e52ea25af699fd445b7046374f81a5b9, type: 3}
   expendables: 1
   recoveryHp: 100
   recoveryMp: 0
   counter: 5
+  equipment: 0
+  helmet: 0
+  armor: 0
+  gloves: 0
+  pants: 0
+  shoes: 0
+  weapone: 0

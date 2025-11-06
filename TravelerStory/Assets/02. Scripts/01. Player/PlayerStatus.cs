@@ -1,10 +1,10 @@
-using UnityEditor;
 using UnityEngine;
 
 public class PlayerStatus
 {
     public static PlayerStatus instance;
 
+    #region field
     public static PlayerStatus Instance()
     {
         if (instance == null)
@@ -14,20 +14,28 @@ public class PlayerStatus
         return instance;
     }
 
-    #region field
     public int hp = 300;
     public int mp = 200;
     public int damage = 20;
     public int skillDamage = 0;
+    public int defense = 0;
     public int speed = 10;
 
     public int MaxHp = 300;
     public int MaxMp = 200;
+
+    public int Gold = 1000;
     #endregion
 
     public void Awake()
     {
+        instance = this;
+    }
 
+    public void Update()
+    {
+        Player.Instance.ChangeHPBarAmount(hp, MaxHp);
+        Player.Instance.ChangeMPBarAmount(mp, MaxMp);
     }
 
     #region mathod

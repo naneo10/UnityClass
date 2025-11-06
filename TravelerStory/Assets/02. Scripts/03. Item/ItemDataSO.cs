@@ -7,6 +7,7 @@ public class ItemDataSO : ScriptableObject
     [Header("기본 정보")]
     public string itemName;
     public int damage;
+    public int defense;
     public float speed;
     public int price;
     public Sprite itemimage;

@@ -6,7 +6,7 @@ public class MonsterEnCounter : MonoBehaviour
     [SerializeField] private GameObject monster;
     [SerializeField] private RectTransform interactionIcon;
 
-    private bool rangeIn = false;
+    private bool rangeIn;
     #endregion
 
     void Start()

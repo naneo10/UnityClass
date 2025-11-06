@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class Slot : MonoBehaviour, IPointerClickHandler
 {
+    #region field
     [SerializeField] Image image;
     [SerializeField] TextMeshProUGUI itemCounter;
 
@@ -17,6 +18,7 @@ public class Slot : MonoBehaviour, IPointerClickHandler
             _item = value;
             if (_item != null)
             {
+                //아이템 이미지 표기
                 if (_item.itemimage != null)
                 {
                     image.sprite = Item.itemimage;
@@ -24,27 +26,32 @@ public class Slot : MonoBehaviour, IPointerClickHandler
                 }
                 else
                 {
-                    Debug.Log($"슬롯 아이템 이미지 : {_item.name}의 값이 null");
+                    image.sprite = null;
                     image.color = new Color(1, 1, 1, 0);
                 }
 
-                if (_item.counter > 0)
+                //아이템 수량 카운트
+                if (itemCounter != null)
                 {
-                    itemCounter.text = "" + _item.counter;
-                }
-                else
-                {
-                    itemCounter.text = "";
+                    if (_item.counter > 0)
+                    {
+                        itemCounter.text = "" + _item.counter;
+                    }
+                    else
+                    {
+                        itemCounter.text = "";
+                    }
                 }
             }
             else
             {
                 image.sprite = null;
                 image.color = new Color(1, 1, 1, 0);
-                itemCounter.text = "";
+                if (itemCounter != null) itemCounter.text = "";
             }
         }
     }
+    #endregion
 
     private void Awake()
     {
@@ -59,6 +66,8 @@ public class Slot : MonoBehaviour, IPointerClickHandler
     {
         if ( _item != null)
         {
+            if (itemCounter == null) return;
+
             if (_item.counter > 0)
             {
                 itemCounter.text = "" + _item.counter;
@@ -66,21 +75,13 @@ public class Slot : MonoBehaviour, IPointerClickHandler
         }
     }
 
+    #region method
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (eventData.button == PointerEventData.InputButton.Left)
-        {
-            Debug.Log("Mouse Click Button : left");
-        }
-
-        if (eventData.button == PointerEventData.InputButton.Right)
-        {
-            Debug.Log("Mouse Click Button : Right");
-        }
-
         if (InteractionManager.Instance != null)
         {
             InteractionManager.Instance.OnSlotClicked(this, eventData);
         }
     }
+    #endregion
 }

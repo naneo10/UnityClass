@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: MonsterData02
   m_EditorClassIdentifier: 
   monsterName: RattlesTurquo
-  maxHp: 500
-  maxMp: 350
+  hp: 1500
+  mp: 600
   damage: 50
   speed: 25
   prefab: {fileID: 8272720946342177869, guid: 7cb09997646467e43b4d47d9976f352c, type: 3}
+  maxHp: 500
+  maxMp: 350

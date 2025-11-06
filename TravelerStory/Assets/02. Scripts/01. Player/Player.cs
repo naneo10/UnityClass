@@ -4,6 +4,8 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     #region field
+    public static Player Instance;
+
     [Header("이동")]
     private float moveSpeed = 5.0f;
     private float inputX;
@@ -12,7 +14,6 @@ public class Player : MonoBehaviour
     [Header("UI/Status")]
     [SerializeField] private Image hpImage;
     [SerializeField] private Image mpImage;
-    public int gold = 0;
 
     //컴포넌트
     private Rigidbody2D rb;
@@ -22,6 +23,14 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null)
+        {
+            Destroy(Instance);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(Instance);
+
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
@@ -65,14 +74,14 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void ChangeHPBarAmount(float hp)
+    public void ChangeHPBarAmount(int hp, int MaxHp)
     {
-        hpImage.fillAmount = hp;
+        hpImage.fillAmount = hp / MaxHp;
     }
 
-    private void ChangeMPBarAmout(float mp)
+    public void ChangeMPBarAmount(int mp, int MaxMp)
     {
-        mpImage.fillAmount = mp;
+        mpImage.fillAmount = mp / MaxMp;
     }
     #endregion
 }
