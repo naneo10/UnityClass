@@ -2,6 +2,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class InteractionManager : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class InteractionManager : MonoBehaviour
     public EquipMent cEquipMent;
     public Store cStore;
     public Gold cGold;
+    public Monster cMonster;
 
     [Header("인벤토리/스킬/장비")]
     [SerializeField] private GameObject inventory;
@@ -23,6 +25,9 @@ public class InteractionManager : MonoBehaviour
     [Header("상점")]
     [SerializeField] public GameObject store;
     private bool rangeIn;
+
+    [Header("몬스터 상호작용")]
+    private bool monsterRangeIn;
 
     //사용조건 충족 확인
     public bool useItem;
@@ -76,6 +81,17 @@ public class InteractionManager : MonoBehaviour
         {
             store.SetActive(!store.activeSelf);
         }
+
+        if (inputF && monsterRangeIn)
+        {
+            SceneManager.LoadScene("02.EnCounter");
+        }
+    }
+
+    public void EnCounter(bool check, MonsterData monsterData)
+    {
+        monsterRangeIn = check;
+        Debug.Log($"인카운터 몬스터 : {monsterData.monsterName}");
     }
 
     public void IsNear(bool check)

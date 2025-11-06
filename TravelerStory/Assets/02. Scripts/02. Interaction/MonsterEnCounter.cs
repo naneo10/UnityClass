@@ -3,37 +3,31 @@ using UnityEngine;
 public class MonsterEnCounter : MonoBehaviour
 {
     #region
-    [SerializeField] private GameObject monster;
+    [SerializeField] public Monster monster;
     [SerializeField] private RectTransform interactionIcon;
 
-    private bool rangeIn;
+    public bool monsterRangeIn = false;
     #endregion
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        
-    }
 
     #region
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.gameObject.CompareTag("Player")) return;
 
-        rangeIn = true;
+        monsterRangeIn = true;
 
         interactionIcon.gameObject.SetActive(true);
+
+        monster.TriggerCheck();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.gameObject.CompareTag("Player")) return;
+        //씬 이동 후 Exit 오류 방지
+        if (this == null) return;
 
-        rangeIn = false;
+        monsterRangeIn = false;
 
         interactionIcon.gameObject.SetActive(false);
     }

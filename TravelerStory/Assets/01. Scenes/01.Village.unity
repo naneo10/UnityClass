@@ -20634,9 +20634,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d66338f4eb0404e8af716ef8256b91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data:
+  - {fileID: 11400000, guid: 685f287046477d34094aa09e15cceb58, type: 2}
+  - {fileID: 11400000, guid: af0f9d28df6b1e641857e8f08542bd37, type: 2}
   monsters:
   - {fileID: 2074831963}
   - {fileID: 1424475974}
+  monsterSlots:
+  - {fileID: 2074831972}
+  - {fileID: 1424475983}
+  monsterEnCounter:
+  - {fileID: 946907754}
+  - {fileID: 1409255319}
 --- !u!1 &624584670
 GameObject:
   m_ObjectHideFlags: 0
@@ -23655,8 +23664,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2689b4bae4d90e047955cba7d9fd7ae1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monster: {fileID: 2074831963}
+  monster: {fileID: 624086470}
   interactionIcon: {fileID: 1827523774}
+  monsterRangeIn: 0
 --- !u!1 &949400889
 GameObject:
   m_ObjectHideFlags: 0
@@ -25974,6 +25984,7 @@ MonoBehaviour:
   cEquipMent: {fileID: 1087099130}
   cStore: {fileID: 665960602}
   cGold: {fileID: 816086260}
+  cMonster: {fileID: 624086470}
   inventory: {fileID: 1740872852}
   Equipment: {fileID: 1087099126}
   skill: {fileID: 0}
@@ -29936,8 +29947,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2689b4bae4d90e047955cba7d9fd7ae1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monster: {fileID: 1424475974}
+  monster: {fileID: 624086470}
   interactionIcon: {fileID: 1552619233}
+  monsterRangeIn: 0
 --- !u!1 &1415603974
 GameObject:
   m_ObjectHideFlags: 0
@@ -30124,7 +30136,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b40ae50ba72fe84081d6e0b4a7fe2e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: af0f9d28df6b1e641857e8f08542bd37, type: 2}
 --- !u!1 &1439053930
 GameObject:
   m_ObjectHideFlags: 0
@@ -36225,7 +36236,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b40ae50ba72fe84081d6e0b4a7fe2e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  monsterData: {fileID: 11400000, guid: 685f287046477d34094aa09e15cceb58, type: 2}
 --- !u!1 &2087407099
 GameObject:
   m_ObjectHideFlags: 0
