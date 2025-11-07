@@ -15,7 +15,7 @@ public class SavePoint : MonoBehaviour
         get { return spawnPoint; }
     }
 
-    //플레이거가 세이브 포인트에 들어오면
+    //플레이어가 세이브 포인트에 들어오면
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!collision.CompareTag("Player")) return;

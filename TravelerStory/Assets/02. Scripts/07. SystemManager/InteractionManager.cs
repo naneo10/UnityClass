@@ -1,8 +1,8 @@
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic; //list<> 쓰기 위해서 필요 .Contains() 사용 가능, .Any() 사용 불가능
+using System.Linq; //list.Any() 사용하기 위해서 필요
 
 public class InteractionManager : MonoBehaviour
 {
@@ -28,6 +28,7 @@ public class InteractionManager : MonoBehaviour
 
     [Header("몬스터 상호작용")]
     private bool monsterRangeIn;
+    private List<MonsterSlot> monstersInRange = new List<MonsterSlot>();
 
     //사용조건 충족 확인
     public bool useItem;
@@ -45,7 +46,7 @@ public class InteractionManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
+        if (Instance != null && Instance != this)
         {
             Destroy(Instance);
             return;
@@ -91,7 +92,44 @@ public class InteractionManager : MonoBehaviour
     public void EnCounter(bool check, MonsterData monsterData)
     {
         monsterRangeIn = check;
-        Debug.Log($"인카운터 몬스터 : {monsterData.monsterName}");
+        Debug.Log($"몬스터 : {monsterData.monsterName}");
+        Debug.Log(monsterRangeIn);
+    }
+
+    public void OutCounter(bool check, MonsterData monsterData)
+    {
+        monsterRangeIn = check;
+        Debug.Log($"몬스터 : {monsterData.monsterName}");
+        Debug.Log(monsterRangeIn);
+    }
+
+    //Trigger.cs가 들어간 몬스터 범위 안에 들어갈 경우 들어간 것과 들어가지 않은 것
+    //둘 다 값을 보내오다보니 뒤에오는 값이 덮어 쓰는 상황 발생, 특정 몬스터 분별 불가
+    public void AddMonsterInRange(MonsterSlot monster)
+    {
+        if (!monstersInRange.Contains(monster))
+        {
+            monstersInRange.Add(monster);
+        }
+
+        EnCounter(true, monster.monsterData);
+    }
+
+    public void RemoveMonsterInRange(MonsterSlot monster)
+    {
+        if (monstersInRange.Any(x => x == monster))
+        {
+            monstersInRange.Remove(monster);
+        }
+
+        if (monstersInRange.Count > 0)
+        {
+            EnCounter(true, monstersInRange[0].monsterData);
+        }
+        else
+        {
+            OutCounter(false, monster.monsterData);
+        }
     }
 
     public void IsNear(bool check)
