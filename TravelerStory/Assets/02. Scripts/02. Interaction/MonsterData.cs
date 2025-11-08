@@ -13,4 +13,9 @@ public class MonsterData : ScriptableObject
 
     public int maxHp;
     public int maxMp;
+
+    private void Awake()
+    {
+        
+    }
 }

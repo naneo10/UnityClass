@@ -20,20 +20,20 @@ public abstract class Skill
     #endregion
 }
 
-public class FireBall : Skill
+public class Fireball : Skill
 {
-    public static FireBall instance;
+    public static Fireball instance;
 
-    public static FireBall Instance()
+    public static Fireball Instance()
     {
         if (instance == null)
         {
-            instance = new FireBall("파이어볼", 30, 0);
+            instance = new Fireball("파이어볼", 30, 0);
         }
         return instance;
     }
 
-    public FireBall (string name, int damage, int speed) : base (name, damage, speed)
+    public Fireball (string name, int damage, int speed) : base (name, damage, speed)
     {
         Name = name;
         Damage = damage;

@@ -7,6 +7,8 @@ public class EquipMent : MonoBehaviour
 {
     #region field
     //리스트에 추가/변경하는 식으로 장비 착용 및 변경
+    public static EquipMent Instance { get; private set; }
+
     public List<ItemDataSO> equipment;
 
     [Header("인벤토리 UI")]
@@ -23,6 +25,14 @@ public class EquipMent : MonoBehaviour
 
     void Awake()
     {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(Instance);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
         FreshList();
     }
 

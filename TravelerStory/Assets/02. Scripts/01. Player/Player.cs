@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(Instance);
+        DontDestroyOnLoad(gameObject);
 
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();

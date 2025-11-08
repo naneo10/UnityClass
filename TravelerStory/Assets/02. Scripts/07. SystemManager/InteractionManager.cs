@@ -29,6 +29,17 @@ public class InteractionManager : MonoBehaviour
     [Header("몬스터 상호작용")]
     private bool monsterRangeIn;
     private List<MonsterSlot> monstersInRange = new List<MonsterSlot>();
+    public List<MonsterSlot> MonstersInRange
+    {
+        get { return monstersInRange; }
+    }
+
+    //Scene 전환
+    private List<MonsterSlot> lastMonster = new List<MonsterSlot>();
+    public List<MonsterSlot> LastMonster
+    {
+        get { return lastMonster; }
+    }
 
     //사용조건 충족 확인
     public bool useItem;
@@ -78,6 +89,11 @@ public class InteractionManager : MonoBehaviour
             Equipment.SetActive(!Equipment.activeSelf);
         }
 
+        if (inputK)
+        {
+            skill.SetActive(!skill.activeSelf);
+        }
+
         if (inputF && rangeIn)
         {
             store.SetActive(!store.activeSelf);
@@ -85,6 +101,8 @@ public class InteractionManager : MonoBehaviour
 
         if (inputF && monsterRangeIn)
         {
+            lastMonster = new List<MonsterSlot>(Instance.MonstersInRange);
+            Debug.Log($"작동함? :{LastMonster.Count}, {LastMonster[0]}");
             SceneManager.LoadScene("02.EnCounter");
         }
     }
@@ -92,15 +110,11 @@ public class InteractionManager : MonoBehaviour
     public void EnCounter(bool check, MonsterData monsterData)
     {
         monsterRangeIn = check;
-        Debug.Log($"몬스터 : {monsterData.monsterName}");
-        Debug.Log(monsterRangeIn);
     }
 
     public void OutCounter(bool check, MonsterData monsterData)
     {
         monsterRangeIn = check;
-        Debug.Log($"몬스터 : {monsterData.monsterName}");
-        Debug.Log(monsterRangeIn);
     }
 
     //Trigger.cs가 들어간 몬스터 범위 안에 들어갈 경우 들어간 것과 들어가지 않은 것
@@ -130,11 +144,6 @@ public class InteractionManager : MonoBehaviour
         {
             OutCounter(false, monster.monsterData);
         }
-    }
-
-    public void IsNear(bool check)
-    {
-        rangeIn = check;
     }
 
     private void UseItem(Slot slot)
@@ -254,6 +263,11 @@ public class InteractionManager : MonoBehaviour
                 }
                 break;
         }
+    }
+
+    public void IsNear(bool check)
+    {
+        rangeIn = check;
     }
 
     private void BuyItem(StoreSlot storeSlot)

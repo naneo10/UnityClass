@@ -19,14 +19,21 @@ public class MonsterSlot : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (!collision.gameObject.CompareTag("Player")) return;
-        
-        //씬 이동 후 Exit 오류 방지
-        if (interactionIcon.gameObject != null)
-        {
-            interactionIcon.gameObject.SetActive(false);
-        }
 
-        InteractionManager.Instance.RemoveMonsterInRange(this);
+        //씬 이동 후 Exit 오류 방지
+        if (interactionIcon == null || interactionIcon.gameObject == null) return;
+        
+        interactionIcon.gameObject.SetActive(false);
+
+        if (InteractionManager.Instance != null)
+        {
+            InteractionManager.Instance.RemoveMonsterInRange(this);
+        }
+        else if (InteractionManager.Instance == null)
+        {
+            //싱글톤 제대로 작동하는지 확인용
+            Debug.Log($"현재 인터렉션 메니저 : {InteractionManager.Instance}");
+        }
     }
     #endregion
 }

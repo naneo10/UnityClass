@@ -6,12 +6,6 @@ public class SpawnPoint : MonoBehaviour
     public GameObject prefabToSpawn;
     #endregion
 
-    void Start()
-    {
-        //Invoke : https://chameleonstudio.tistory.com/37
-        Invoke("SpawnObject", 2.0f);
-    }
-
     #region method
     public GameObject SpawnObject()
     {
