@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "Item_", menuName = "Add Item/Item")]
 public class ItemDataSO : ScriptableObject
@@ -7,6 +6,7 @@ public class ItemDataSO : ScriptableObject
     [Header("기본 정보")]
     public string itemName;
     public int damage;
+    public int skillDamage;
     public int defense;
     public float speed;
     public int price;

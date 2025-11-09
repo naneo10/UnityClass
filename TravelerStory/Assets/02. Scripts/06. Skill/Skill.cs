@@ -17,6 +17,8 @@ public abstract class Skill
 
     #region method
     public abstract void UseSkill(PlayerStatus player, MonsterData monster);
+
+    public abstract int SkillDamage(PlayerStatus player);
     #endregion
 }
 
@@ -28,7 +30,7 @@ public class Fireball : Skill
     {
         if (instance == null)
         {
-            instance = new Fireball("파이어볼", 30, 0);
+            instance = new Fireball("파이어볼", 3, 0);
         }
         return instance;
     }
@@ -45,6 +47,12 @@ public class Fireball : Skill
         int totalSkillDamage = player.skillDamage * Damage;
         monster.hp -= totalSkillDamage;
     }
+
+    public override int SkillDamage(PlayerStatus player)
+    {
+        int skillDamage = player.skillDamage * Damage;
+        return skillDamage;
+    }
 }
 
 public class IceSpear : Skill
@@ -55,7 +63,7 @@ public class IceSpear : Skill
     {
         if (instance == null)
         {
-            instance = new IceSpear("아이스 스피어", 25, 10);
+            instance = new IceSpear("아이스 스피어", 2, 10);
         }
         return instance;
     }
@@ -71,6 +79,12 @@ public class IceSpear : Skill
     {
         int totalSkillDamage = player.skillDamage * Damage;
         monster.hp -= totalSkillDamage;
+    }
+
+    public override int SkillDamage(PlayerStatus player)
+    {
+        int skillDamage = player.skillDamage * Damage;
+        return skillDamage;
     }
 }
 
@@ -98,6 +112,12 @@ public class DoubleAttack : Skill
     {
         int totalSkillDamage = player.damage * Damage;
         monster.hp -= totalSkillDamage;
+    }
+
+    public override int SkillDamage(PlayerStatus player)
+    {
+        int skillDamage = player.damage * Damage;
+        return skillDamage;
     }
 }
 

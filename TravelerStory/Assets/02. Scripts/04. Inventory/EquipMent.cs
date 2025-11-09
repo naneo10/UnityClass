@@ -117,12 +117,10 @@ public class EquipMent : MonoBehaviour
             if (equippedArmor)
             {
                 PlayerStatus.Instance().defense += item.defense;
-                Debug.Log($"현재 방어력 : {PlayerStatus.Instance().defense}");
             }
             else
             {
                 PlayerStatus.Instance().defense -= item.defense;
-                Debug.Log($"현재 방어력 : {PlayerStatus.Instance().defense}");
             }
         }
 
@@ -132,13 +130,25 @@ public class EquipMent : MonoBehaviour
 
             if (equippedWeapone)
             {
-                PlayerStatus.Instance().damage += item.damage;
-                Debug.Log($"현재 공격력 : {PlayerStatus.Instance().damage}");
+                if (item.damage > 0)
+                {
+                    PlayerStatus.Instance().damage += item.damage;
+                }
+                else if (item.skillDamage > 0)
+                {
+                    PlayerStatus.Instance().skillDamage += item.skillDamage;
+                }
             }
             else
             {
-                PlayerStatus.Instance().damage -= item.damage;
-                Debug.Log($"현재 공격력 : {PlayerStatus.Instance().damage}");
+                if (item.damage > 0)
+                {
+                    PlayerStatus.Instance().damage -= item.damage;
+                }
+                else if (item.skillDamage > 0)
+                {
+                    PlayerStatus.Instance().skillDamage -= item.skillDamage;
+                }
             }
         }
     }
@@ -149,14 +159,20 @@ public class EquipMent : MonoBehaviour
         {
             PlayerStatus.Instance().defense -= duplicate.defense;
             PlayerStatus.Instance().defense += item.defense;
-            Debug.Log($"현재 방어력 : {PlayerStatus.Instance().defense}");
         }
 
         if (item.weapone && duplicate.weapone)
         {
-            PlayerStatus.Instance().damage -= duplicate.damage;
-            PlayerStatus.Instance().damage += item.damage;
-            Debug.Log($"현재 공격력 : {PlayerStatus.Instance().damage}");
+            if (item.damage > 0)
+            {
+                PlayerStatus.Instance().damage -= duplicate.damage;
+                PlayerStatus.Instance().damage += item.damage;
+            }
+            else if (item.skillDamage > 0)
+            {
+                PlayerStatus.Instance().skillDamage -= duplicate.skillDamage;
+                PlayerStatus.Instance().skillDamage += item.skillDamage;
+            }
         }
     }
     #endregion

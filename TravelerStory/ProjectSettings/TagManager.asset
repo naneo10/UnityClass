@@ -4,6 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Monster
   - Type01
   - Type02
   layers:

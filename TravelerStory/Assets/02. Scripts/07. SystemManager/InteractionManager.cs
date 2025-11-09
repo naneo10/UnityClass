@@ -2,7 +2,8 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic; //list<> 쓰기 위해서 필요 .Contains() 사용 가능, .Any() 사용 불가능
-using System.Linq; //list.Any() 사용하기 위해서 필요
+using System.Linq;
+using Unity.VisualScripting;
 
 public class InteractionManager : MonoBehaviour
 {
@@ -16,11 +17,14 @@ public class InteractionManager : MonoBehaviour
     public Store cStore;
     public Gold cGold;
     public Monster cMonster;
+    public SkillList cSkillList;
+    public Status cStatus;
 
     [Header("인벤토리/스킬/장비")]
     [SerializeField] private GameObject inventory;
     [SerializeField] private GameObject Equipment;
     [SerializeField] private GameObject skill;
+    [SerializeField] private GameObject status;
 
     [Header("상점")]
     [SerializeField] public GameObject store;
@@ -41,6 +45,8 @@ public class InteractionManager : MonoBehaviour
         get { return lastMonster; }
     }
 
+    public bool changeScene = false;
+
     //사용조건 충족 확인
     public bool useItem;
     public bool sameItem;
@@ -50,6 +56,7 @@ public class InteractionManager : MonoBehaviour
     private bool inputI;
     private bool inputK;
     private bool inputP;
+    private bool inputN;
 
     //상호작용 키 값
     private bool inputF;
@@ -74,36 +81,48 @@ public class InteractionManager : MonoBehaviour
     #region method
     private void Active()
     {
-        inputI = Input.GetKeyDown(KeyCode.I);
-        inputP = Input.GetKeyDown(KeyCode.P);
-        inputK = Input.GetKeyDown(KeyCode.K);
-        inputF = Input.GetKeyDown(KeyCode.F);
-
-        if (inputI)
+        if (!changeScene)
         {
-            inventory.SetActive(!inventory.activeSelf);
-        }
+            inputI = Input.GetKeyDown(KeyCode.I);
+            inputP = Input.GetKeyDown(KeyCode.P);
+            inputK = Input.GetKeyDown(KeyCode.K);
+            inputF = Input.GetKeyDown(KeyCode.F);
+            inputN = Input.GetKeyDown(KeyCode.N);
 
-        if (inputP)
-        {
-            Equipment.SetActive(!Equipment.activeSelf);
-        }
+            if (inputI)
+            {
+                inventory.SetActive(!inventory.activeSelf);
+            }
 
-        if (inputK)
-        {
-            skill.SetActive(!skill.activeSelf);
-        }
+            if (inputP)
+            {
+                Equipment.SetActive(!Equipment.activeSelf);
+            }
 
-        if (inputF && rangeIn)
-        {
-            store.SetActive(!store.activeSelf);
-        }
+            if (inputK)
+            {
+                cSkillList.FreshSkillSlot();
+                skill.SetActive(!skill.activeSelf);
+            }
 
-        if (inputF && monsterRangeIn)
-        {
-            lastMonster = new List<MonsterSlot>(Instance.MonstersInRange);
-            Debug.Log($"작동함? :{LastMonster.Count}, {LastMonster[0]}");
-            SceneManager.LoadScene("02.EnCounter");
+            if (inputF && rangeIn)
+            {
+                store.SetActive(!store.activeSelf);
+            }
+
+            if (inputF && monsterRangeIn)
+            {
+                lastMonster = new List<MonsterSlot>(Instance.MonstersInRange);
+                SceneManager.LoadScene("02.EnCounter");
+
+                Player.Instance.sr.flipX = false;
+            }
+
+            if (inputN)
+            {
+                cStatus.FreshStatus();
+                status.SetActive(!status.activeSelf);
+            }
         }
     }
 

@@ -1,5 +1,7 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -14,10 +16,14 @@ public class Player : MonoBehaviour
     [Header("UI/Status")]
     [SerializeField] private Image hpImage;
     [SerializeField] private Image mpImage;
+    [SerializeField] private TextMeshProUGUI hpText;
+    [SerializeField] private TextMeshProUGUI mpText;
+
+    [SerializeField] private Image smallHpImage;
 
     //ÄÄÆ÷³ÍÆ®
     private Rigidbody2D rb;
-    private SpriteRenderer sr;
+    public SpriteRenderer sr;
     private Animator anim;
     #endregion
 
@@ -34,6 +40,10 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+
+        CurrentStatusText();
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void Update()
@@ -44,8 +54,11 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Move();
-        Direction();
+        if (!InteractionManager.Instance.changeScene)
+        {
+            Move();
+            Direction();
+        }
     }
 
     #region method
@@ -77,11 +90,37 @@ public class Player : MonoBehaviour
     public void ChangeHPBarAmount(int hp, int MaxHp)
     {
         hpImage.fillAmount = hp / MaxHp;
+        smallHpImage.fillAmount = hp / MaxHp;
     }
 
     public void ChangeMPBarAmount(int mp, int MaxMp)
     {
         mpImage.fillAmount = mp / MaxMp;
+    }
+
+    public void CurrentStatusText()
+    {
+        if (hpText == null && mpText == null) return;
+        hpText.text = "" + ($"{PlayerStatus.Instance().hp} / {PlayerStatus.Instance().MaxHp}");
+        mpText.text = "" + ($"{PlayerStatus.Instance().mp} / {PlayerStatus.Instance().MaxMp}");
+    }
+
+    void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    {
+        //GameObject.Find : https://codeposting.tistory.com/entry/Unity-%EC%9C%A0%EB%8B%88%ED%8B%B0-%EA%B2%8C%EC%9E%84%EC%98%A4%EB%B8%8C%EC%A0%9D%ED%8A%B8-transform-%EB%B0%A9%EB%B2%95-GameObject-find
+        GameObject hpObject = GameObject.Find("HpText");
+        GameObject mpObject = GameObject.Find("MpText");
+        GameObject hpImage = GameObject.Find("HP");
+        GameObject mpImage = GameObject.Find("MP");
+        GameObject smallHpImage = GameObject.Find("SmallHp");
+
+        if (hpObject != null) hpText = hpObject.GetComponent<TextMeshProUGUI>();
+        if (mpObject != null) mpText = mpObject.GetComponent<TextMeshProUGUI>();
+        if (hpImage != null) this.hpImage = hpImage.GetComponent<Image>();
+        if (mpImage != null) this.mpImage = mpImage.GetComponent<Image>();
+        if (smallHpImage != null) this.smallHpImage = smallHpImage.GetComponent<Image>();
+
+        CurrentStatusText();
     }
     #endregion
 }

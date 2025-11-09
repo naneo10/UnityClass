@@ -36,6 +36,7 @@ public class PlayerStatus
     {
         Player.Instance.ChangeHPBarAmount(hp, MaxHp);
         Player.Instance.ChangeMPBarAmount(mp, MaxMp);
+        Player.Instance.CurrentStatusText();
     }
 
     #region mathod

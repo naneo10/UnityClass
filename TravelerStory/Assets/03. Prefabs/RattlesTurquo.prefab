@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 3549339271053101810}
   - component: {fileID: 27216803782180620}
   - component: {fileID: 5687900875981195712}
+  - component: {fileID: 8363568886328442728}
   m_Layer: 0
   m_Name: RattlesTurquo
-  m_TagString: Type02
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,3 +107,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8363568886328442728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8272720946342177869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74f676fef8dd7754ea045abc2f2de31b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterData: {fileID: 11400000, guid: af0f9d28df6b1e641857e8f08542bd37, type: 2}
+  smallMonsterHpImage: {fileID: 0}

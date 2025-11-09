@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 8343977413104348003}
   - component: {fileID: 6786102919935423032}
   - component: {fileID: 1297613676822004051}
+  - component: {fileID: -8798029764217303902}
   m_Layer: 0
   m_Name: FrankBlue
-  m_TagString: Type01
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,3 +107,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-8798029764217303902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5771052234441090183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74f676fef8dd7754ea045abc2f2de31b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monsterData: {fileID: 11400000, guid: 685f287046477d34094aa09e15cceb58, type: 2}
+  smallMonsterHpImage: {fileID: 0}

@@ -1,12 +1,14 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     #region field
     public static GameManager Instance { get; private set; }
+    public Transform Player;
 
     [Header("스폰 포인트")]
-    [SerializeField] SpawnPoint playerSpawnPoint;
+    [SerializeField] Transform PlayerSpawnPoint;
     [SerializeField] SpawnPoint BlueSpawnPoint;
     [SerializeField] SpawnPoint TurquoSpawnPoint;
     #endregion
@@ -20,6 +22,10 @@ public class GameManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        //씬 전환 후 사용되지 않는 기능 잠금 I, K, N, P 등
+        InteractionManager.Instance.changeScene = true;
+        if (!InteractionManager.Instance.changeScene) return;
     }
 
     void Start()
@@ -27,12 +33,26 @@ public class GameManager : MonoBehaviour
         SetupScene();
     }
 
-    void Update()
+    #region method
+    public void OnEnable()
     {
-        
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    #region method
+    public void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    {
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
+        {
+            Player = playerObj.GetComponent<Transform>();
+        }
+    }
+
     public void SetupScene()
     {
         SpawnPlayer();
@@ -41,10 +61,7 @@ public class GameManager : MonoBehaviour
 
     public void SpawnPlayer()
     {
-        if (playerSpawnPoint != null)
-        {
-            
-        }
+        Player.position = PlayerSpawnPoint.position;
     }
 
     public void SpawnEnemy()
