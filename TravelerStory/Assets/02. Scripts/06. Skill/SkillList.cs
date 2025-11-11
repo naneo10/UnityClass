@@ -6,17 +6,12 @@ public class SkillList : MonoBehaviour
     #region field
     private List<Skill> skills = new List<Skill>();
     [SerializeField] private List<SkillSlot> slots;
+    #endregion
 
     void Awake()
     {
         FreshSkill();
         FreshSkillSlot();
-    }
-    #endregion
-
-    void Update()
-    {
-
     }
 
     #region method

@@ -3,7 +3,6 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic; //list<> 쓰기 위해서 필요 .Contains() 사용 가능, .Any() 사용 불가능
 using System.Linq;
-using Unity.VisualScripting;
 
 public class InteractionManager : MonoBehaviour
 {
@@ -71,6 +70,14 @@ public class InteractionManager : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        cInventory = GetComponent<Inventory>();
+        cEquipMent = GetComponent<EquipMent>();
+        cStore = GetComponent<Store>();
+        cGold = GetComponent<Gold>();
+        cMonster = GetComponent<Monster>();
+        cSkillList = GetComponent<SkillList>();
+        cStatus = GetComponent<Status>();
     }
 
     void Update()
