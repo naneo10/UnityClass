@@ -71,13 +71,7 @@ public class InteractionManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        cInventory = GetComponent<Inventory>();
-        cEquipMent = GetComponent<EquipMent>();
-        cStore = GetComponent<Store>();
-        cGold = GetComponent<Gold>();
-        cMonster = GetComponent<Monster>();
-        cSkillList = GetComponent<SkillList>();
-        cStatus = GetComponent<Status>();
+        Connect();
     }
 
     void Update()
@@ -131,6 +125,21 @@ public class InteractionManager : MonoBehaviour
                 status.SetActive(!status.activeSelf);
             }
         }
+    }
+
+    public void Connect()
+    {
+        GameObject cInventory = GameObject.Find("Inventory");
+        GameObject cEquipment = GameObject.Find("Equipment");
+        GameObject cStore = GameObject.Find("Store");
+        GameObject cSkillList = GameObject.Find("Skill");
+        GameObject cStatus = GameObject.Find("Status");
+
+        if (cInventory != null) this.cInventory = cInventory.GetComponent<Inventory>();
+        if (cEquipment != null) cEquipMent = cEquipment.GetComponent<EquipMent>();
+        if (cStore != null) this.cStore = cStore.GetComponent<Store>();
+        if (cSkillList != null) this.cSkillList = cSkillList.GetComponent<SkillList>();
+        if (cStatus != null) this.cStatus = cStatus.GetComponent<Status>();
     }
 
     public void EnCounter(bool check, MonsterData monsterData)

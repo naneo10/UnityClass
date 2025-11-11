@@ -4,10 +4,10 @@ using UnityEngine.UI;
 public class Monster : MonoBehaviour
 {
     #region field
-    [Header("스폰 포인트")]
     [SerializeField] public MonsterBattle monsterBattle;
     [SerializeField] public Image monsterHpBar;
 
+    [Header("스폰 포인트")]
     [SerializeField] SpawnPoint BlueSpawnPoint;
     [SerializeField] SpawnPoint TurquoSpawnPoint;
     #endregion
