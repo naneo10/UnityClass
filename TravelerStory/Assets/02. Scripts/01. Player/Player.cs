@@ -87,15 +87,11 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void ChangeHPBarAmount(int hp, int MaxHp)
+    public void ChangeBarAmount()
     {
-        hpImage.fillAmount = hp / MaxHp;
-        smallHpImage.fillAmount = hp / MaxHp;
-    }
-
-    public void ChangeMPBarAmount(int mp, int MaxMp)
-    {
-        mpImage.fillAmount = mp / MaxMp;
+        hpImage.fillAmount = PlayerStatus.instance.hp / PlayerStatus.instance.MaxHp;
+        smallHpImage.fillAmount = PlayerStatus.instance.hp / PlayerStatus.instance.MaxHp;
+        mpImage.fillAmount = PlayerStatus.instance.mp / PlayerStatus.instance.MaxMp;
     }
 
     public void CurrentStatusText()

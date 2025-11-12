@@ -55,5 +55,10 @@ public class Monster : MonoBehaviour
             }
         }
     }
+
+    public void CurrentStatus(MonsterData monster)
+    {
+        monsterHpBar.fillAmount = monster.hp / monster.maxHp;
+    }
     #endregion
 }

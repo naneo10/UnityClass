@@ -4,9 +4,21 @@ using UnityEngine;
 public class Gold : MonoBehaviour
 {
     #region field
+    public static Gold Instance { get; private set; }
+
     [Header("Gold Text")]
     [SerializeField] private TextMeshProUGUI goldCount;
     #endregion
+
+    private void Awake()
+    {
+        if (Instance != null || Instance != this)
+        {
+            Destroy(Instance);
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
 
     private void Update()
     {

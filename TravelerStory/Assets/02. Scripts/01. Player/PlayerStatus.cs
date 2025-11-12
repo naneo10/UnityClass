@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerStatus
 {
@@ -14,17 +15,19 @@ public class PlayerStatus
         return instance;
     }
 
-    public int hp = 300;
-    public int mp = 200;
+    public float hp = 300.0f;
+    public float mp = 200.0f;
     public int damage = 20;
     public int skillDamage = 0;
     public int defense = 0;
     public int speed = 10;
 
-    public int MaxHp = 300;
-    public int MaxMp = 200;
+    public float MaxHp = 300.0f;
+    public float MaxMp = 200.0f;
 
     public int Gold = 1000;
+
+    public PlayerBattle cPlayerBattle;
     #endregion
 
     public void Awake()
@@ -32,36 +35,47 @@ public class PlayerStatus
         instance = this;
     }
 
-    public void Update()
+    #region mathod
+    private void OnEnable()
     {
-        Player.Instance.ChangeHPBarAmount(hp, MaxHp);
-        Player.Instance.ChangeMPBarAmount(mp, MaxMp);
-        Player.Instance.CurrentStatusText();
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
-    #region mathod
-    public void ModifyHP(int hp)
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    {
+        GameObject cPlayerBattle = GameObject.Find("PlayerBattle");
+
+        if (cPlayerBattle != null) this.cPlayerBattle = cPlayerBattle.GetComponent<PlayerBattle>();
+    }
+
+    public void ModifyHP(float hp)
     {
         if (this.hp >= MaxHp)
         {
             Debug.Log("최대 체력이므로 먹을 수 없음");
             InteractionManager.Instance.useItem = false;
+            cPlayerBattle.useItem = false;
             return;
         }
         else if (this.hp < MaxHp)
         {
             InteractionManager.Instance.useItem = true;
+            cPlayerBattle.useItem = true;
             this.hp += hp;
 
             if (this.hp + hp >= MaxHp)
             {
-                this.hp = 300;
+                this.hp = 300.0f;
             }
         }
-
     }
 
-    public void ModifyMP(int mp)
+    public void ModifyMP(float mp)
     {
         if (this.mp >= MaxMp)
         {
@@ -76,7 +90,7 @@ public class PlayerStatus
 
             if (this.mp + mp >= MaxMp)
             {
-                this.mp = 200;
+                this.mp = 200.0f;
             }
         }
     }

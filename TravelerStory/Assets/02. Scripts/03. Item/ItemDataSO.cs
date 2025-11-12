@@ -15,8 +15,8 @@ public class ItemDataSO : ScriptableObject
     //소비 아이템
     [Header("소비 아이템")]
     public bool expendables;
-    public int recoveryHp;
-    public int recoveryMp;
+    public float recoveryHp;
+    public float recoveryMp;
 
     public int counter;
 

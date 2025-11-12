@@ -1,11 +1,10 @@
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class BattleInventory : MonoBehaviour
 {
     #region field
-    private List<ItemDataSO> Items;
+    private List<ItemDataSO> Items = InteractionManager.Instance.SaveItem;
 
     [SerializeField] private Transform ParentSlot;
     [SerializeField] private BattleInventorySlot[] slot;

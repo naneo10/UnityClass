@@ -11,23 +11,19 @@ public class GameManager : MonoBehaviour
         Skill,
         Item,
         ItemBack,
-        Skill01,
-        Skill02,
-        Skill03,
+        Fireball,
+        IceSpear,
+        DoubleAttack,
         Back
     }
 
     public static GameManager Instance { get; private set; }
 
-    public Transform Player;
+    public Transform PlayerObj;
     public PlayerStatus cPlayerStatus;
     public PlayerBattle cPlayerBattle;
     public Monster cMonster;
     public UIManager cUIManager;
-    public BattleInventory cBattleInventory;
-
-    //아이템 사용조건 확인
-    public bool useItem;
 
     [Header("스폰 포인트")]
     [SerializeField] Transform PlayerSpawnPoint;
@@ -74,22 +70,21 @@ public class GameManager : MonoBehaviour
         GameObject cPlayerBattle = GameObject.Find("PlayerBattle");
         GameObject cMonster = GameObject.Find("Monster");
         GameObject cUIManager = GameObject.Find("UIManager");
-        GameObject cBattleInventory = GameObject.Find("ItemPage");
 
-        if (playerObj != null) Player = playerObj.GetComponent<Transform>();
+        if (playerObj != null) PlayerObj = playerObj.GetComponent<Transform>();
         if (cPlayerBattle != null) this.cPlayerBattle = cPlayerBattle.GetComponent<PlayerBattle>();
         if (cMonster != null) this.cMonster = cMonster.GetComponent<Monster>();
         if (cUIManager != null) this.cUIManager = cUIManager.GetComponent<UIManager>();
-        if (cBattleInventory != null) this.cBattleInventory = cBattleInventory.GetComponent<BattleInventory>();
     }
 
     public void SpawnPlayer()
     {
-        Player.position = PlayerSpawnPoint.position;
+        PlayerObj.position = PlayerSpawnPoint.position;
     }
 
     public void OnSlotClicked(UISlot slot, PointerEventData eventData)
     {
+        MonsterData monster = cMonster.monsterBattle.monsterData;
         switch (eventData.button)
         {
             case PointerEventData.InputButton.Left:
@@ -99,7 +94,9 @@ public class GameManager : MonoBehaviour
                     {
                         case SelectType.Attack:
                             {
-
+                                cPlayerBattle.Attack(cPlayerStatus, monster);
+                                cMonster.CurrentStatus(monster);
+                                cMonster.monsterBattle.Die(monster);
                             }
                             break;
                         case SelectType.Skill:
@@ -117,19 +114,31 @@ public class GameManager : MonoBehaviour
                                 cUIManager.CloseItem();
                             }
                             break;
-                        case SelectType.Skill01:
+                        case SelectType.Fireball:
                             {
-
+                                cPlayerBattle.UseSkill(select, cPlayerStatus, monster);
+                                cMonster.CurrentStatus(monster); //몬스터 HP
+                                Player.Instance.ChangeBarAmount(); //플레이어 HP,MP
+                                Player.Instance.CurrentStatusText();
+                                cMonster.monsterBattle.Die(monster);
                             }
                             break;
-                        case SelectType.Skill02:
+                        case SelectType.IceSpear:
                             {
-
+                                cPlayerBattle.UseSkill(select, cPlayerStatus, monster);
+                                cMonster.CurrentStatus(monster);
+                                Player.Instance.ChangeBarAmount();
+                                Player.Instance.CurrentStatusText();
+                                cMonster.monsterBattle.Die(monster);
                             }
                             break;
-                        case SelectType.Skill03:
+                        case SelectType.DoubleAttack:
                             {
-
+                                cPlayerBattle.UseSkill(select, cPlayerStatus, monster);
+                                cMonster.CurrentStatus(monster);
+                                Player.Instance.ChangeBarAmount();
+                                Player.Instance.CurrentStatusText();
+                                cMonster.monsterBattle.Die(monster);
                             }
                             break;
                         case SelectType.Back:
@@ -140,41 +149,6 @@ public class GameManager : MonoBehaviour
                     }
                 }
                 break;
-        }
-    }
-
-    private void UseItem(BattleInventorySlot slot)
-    {
-        if (slot.ItemData.recoveryHp > 0 && slot.ItemData.recoveryMp == 0)
-        {
-            PlayerStatus.Instance().ModifyHP(slot.ItemData.recoveryHp);
-            Debug.Log($"현재 HP:{PlayerStatus.Instance().hp}");
-
-            //물약 사용 조건 미충족 시 카운트 갱신 방어
-            if (useItem)
-            {
-                slot.ItemData.counter -= 1;
-            }
-
-            if (slot.ItemData.counter <= 0)
-            {
-                cBattleInventory.RemoveItem(slot.ItemData);
-            }
-        }
-        else if (slot.ItemData.recoveryMp > 0 && slot.ItemData.recoveryHp == 0)
-        {
-            PlayerStatus.Instance().ModifyMP(slot.ItemData.recoveryMp);
-            Debug.Log($"현제 MP:{PlayerStatus.Instance().mp}");
-
-            if (useItem)
-            {
-                slot.ItemData.counter -= 1;
-            }
-
-            if (slot.ItemData.counter <= 0)
-            {
-                cBattleInventory.RemoveItem(slot.ItemData);
-            }
         }
     }
 
@@ -190,7 +164,7 @@ public class GameManager : MonoBehaviour
         {
             case PointerEventData.InputButton.Left:
                 {
-                    UseItem(slot);
+                    cPlayerBattle.UseItem(slot);
                 }
                 break;
         }

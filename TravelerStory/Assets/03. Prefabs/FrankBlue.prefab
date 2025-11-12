@@ -120,4 +120,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   monsterData: {fileID: 11400000, guid: 685f287046477d34094aa09e15cceb58, type: 2}
-  smallMonsterHpImage: {fileID: 0}
+  coin: {fileID: 5574209212804635714, guid: ecfccfe60e518874d9f4913a9f09cd83, type: 3}
