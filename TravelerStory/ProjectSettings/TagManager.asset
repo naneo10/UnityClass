@@ -56,6 +56,9 @@ TagManager:
   - name: Player&Monster&Npc
     uniqueID: 4250941897
     locked: 0
+  - name: Effect
+    uniqueID: 2697940973
+    locked: 0
   - name: Coin
     uniqueID: 408173101
     locked: 0

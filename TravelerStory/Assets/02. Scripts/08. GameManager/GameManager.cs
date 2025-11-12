@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
@@ -20,7 +21,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public Transform PlayerObj;
-    public PlayerStatus cPlayerStatus;
+    //public PlayerStatus cPlayerStatus;
     public PlayerBattle cPlayerBattle;
     public Monster cMonster;
     public UIManager cUIManager;
@@ -43,9 +44,9 @@ public class GameManager : MonoBehaviour
         InteractionManager.Instance.changeScene = true;
         if (!InteractionManager.Instance.changeScene) return;
 
-        cPlayerStatus = PlayerStatus.Instance();
+        //cPlayerStatus = PlayerStatus.Instance();
 
-        Debug.Log($"캐릭터 데미지 : {cPlayerStatus.damage}, 스킬 데미지 : {cPlayerStatus.skillDamage}");
+        Debug.Log($"캐릭터 데미지 : {PlayerStatus.instance.damage}, 스킬 데미지 : {PlayerStatus.instance.skillDamage}");
     }
 
     void Start()
@@ -94,9 +95,11 @@ public class GameManager : MonoBehaviour
                     {
                         case SelectType.Attack:
                             {
-                                cPlayerBattle.Attack(cPlayerStatus, monster);
+                                cPlayerBattle.Attack(PlayerStatus.instance, monster);
                                 cMonster.CurrentStatus(monster);
+                                cMonster.monsterBattle.Hit();
                                 cMonster.monsterBattle.Die(monster);
+                                cPlayerBattle.Win(monster);
                             }
                             break;
                         case SelectType.Skill:
@@ -116,29 +119,35 @@ public class GameManager : MonoBehaviour
                             break;
                         case SelectType.Fireball:
                             {
-                                cPlayerBattle.UseSkill(select, cPlayerStatus, monster);
+                                cPlayerBattle.UseSkill(select, PlayerStatus.instance, monster);
                                 cMonster.CurrentStatus(monster); //몬스터 HP
                                 Player.Instance.ChangeBarAmount(); //플레이어 HP,MP
                                 Player.Instance.CurrentStatusText();
+                                cMonster.monsterBattle.Hit();
                                 cMonster.monsterBattle.Die(monster);
+                                cPlayerBattle.Win(monster);
                             }
                             break;
                         case SelectType.IceSpear:
                             {
-                                cPlayerBattle.UseSkill(select, cPlayerStatus, monster);
+                                cPlayerBattle.UseSkill(select, PlayerStatus.instance, monster);
                                 cMonster.CurrentStatus(monster);
                                 Player.Instance.ChangeBarAmount();
                                 Player.Instance.CurrentStatusText();
+                                cMonster.monsterBattle.Hit();
                                 cMonster.monsterBattle.Die(monster);
+                                cPlayerBattle.Win(monster);
                             }
                             break;
                         case SelectType.DoubleAttack:
                             {
-                                cPlayerBattle.UseSkill(select, cPlayerStatus, monster);
+                                cPlayerBattle.UseSkill(select, PlayerStatus.instance, monster);
                                 cMonster.CurrentStatus(monster);
                                 Player.Instance.ChangeBarAmount();
                                 Player.Instance.CurrentStatusText();
+                                cMonster.monsterBattle.Hit();
                                 cMonster.monsterBattle.Die(monster);
+                                cPlayerBattle.Win(monster);
                             }
                             break;
                         case SelectType.Back:

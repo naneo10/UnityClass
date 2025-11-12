@@ -59,13 +59,19 @@ public class PlayerStatus
         {
             Debug.Log("최대 체력이므로 먹을 수 없음");
             InteractionManager.Instance.useItem = false;
-            cPlayerBattle.useItem = false;
+            if (cPlayerBattle != null)
+            {
+                cPlayerBattle.useItem = false;
+            }
             return;
         }
         else if (this.hp < MaxHp)
         {
             InteractionManager.Instance.useItem = true;
-            cPlayerBattle.useItem = true;
+            if (cPlayerBattle != null)
+            {
+                cPlayerBattle.useItem = true;
+            }
             this.hp += hp;
 
             if (this.hp + hp >= MaxHp)
@@ -81,12 +87,20 @@ public class PlayerStatus
         {
             Debug.Log("최대 마력이므로 먹을 수 없음");
             InteractionManager.Instance.useItem = false;
+            if (cPlayerBattle != null)
+            {
+                cPlayerBattle.useItem = false;
+            }
             return;
         }
         else if (this.mp < MaxMp)
         {
             InteractionManager.Instance.useItem = true;
             this.mp += mp;
+            if (cPlayerBattle != null)
+            {
+                cPlayerBattle.useItem = true;
+            }
 
             if (this.mp + mp >= MaxMp)
             {

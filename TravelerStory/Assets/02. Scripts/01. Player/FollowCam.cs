@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class FollowCam : MonoBehaviour
 {
@@ -11,10 +12,30 @@ public class FollowCam : MonoBehaviour
 
     void LateUpdate()
     {
-        Follow();
+        if (!InteractionManager.Instance.changeScene)
+        {
+            Follow();
+        }
     }
 
     #region method
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    {
+        GameObject target = GameObject.Find("Player");
+
+        if (target != null) this.target = target.GetComponent<Transform>();
+    }
+
     private void Follow()
     {
         if (target == null) return;

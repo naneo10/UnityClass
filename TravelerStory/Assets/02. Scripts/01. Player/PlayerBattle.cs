@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static GameManager;
@@ -5,7 +6,8 @@ using static GameManager;
 public class PlayerBattle : MonoBehaviour
 {
     #region field
-    private Player player;
+    private Player playerObj;
+    private PlayerStatus playerStatus;
     public BattleInventory cBattleInventory;
 
     //아이템 사용조건 확인
@@ -14,7 +16,8 @@ public class PlayerBattle : MonoBehaviour
 
     void Awake()
     {
-        player = Player.Instance; //애니메이션
+        playerObj = Player.Instance; //애니메이션
+        playerStatus = PlayerStatus.Instance();
     }
 
     #region method
@@ -37,6 +40,7 @@ public class PlayerBattle : MonoBehaviour
     public void Attack(PlayerStatus player, MonsterData monster)
     {
         monster.hp -= (float)player.damage;
+        playerObj.AttackMotion();
     }
 
     public void UseSkill(SelectType select, PlayerStatus player, MonsterData monster)
@@ -44,14 +48,17 @@ public class PlayerBattle : MonoBehaviour
         if (select == SelectType.Fireball)
         {
             Fireball.Instance().UseSkill(player, monster);
+            playerObj.skillEffect.FireballEffect();
         }
         else if (select == SelectType.IceSpear)
         {
             IceSpear.Instance().UseSkill(player, monster);
+            playerObj.skillEffect.IceSpearEffect();
         }
         else if (select == SelectType.DoubleAttack)
         {
             DoubleAttack.Instance().UseSkill(player, monster);
+            playerObj.DoubleAttackMotion();
         }
     }
 
@@ -59,8 +66,8 @@ public class PlayerBattle : MonoBehaviour
     {
         if (slot.ItemData.recoveryHp > 0 && slot.ItemData.recoveryMp == 0)
         {
-            PlayerStatus.Instance().ModifyHP(slot.ItemData.recoveryHp);
-            Debug.Log($"현재 HP:{PlayerStatus.Instance().hp}");
+            playerStatus.ModifyHP(slot.ItemData.recoveryHp);
+            Debug.Log($"현재 HP:{playerStatus.hp}");
 
             //물약 사용 조건 미충족 시 카운트 갱신 방어
             if (useItem)
@@ -75,8 +82,8 @@ public class PlayerBattle : MonoBehaviour
         }
         else if (slot.ItemData.recoveryMp > 0 && slot.ItemData.recoveryHp == 0)
         {
-            PlayerStatus.Instance().ModifyMP(slot.ItemData.recoveryMp);
-            Debug.Log($"현제 MP:{PlayerStatus.Instance().mp}");
+            playerStatus.ModifyMP(slot.ItemData.recoveryMp);
+            Debug.Log($"현제 MP:{playerStatus.mp}");
 
             if (useItem)
             {
@@ -90,9 +97,20 @@ public class PlayerBattle : MonoBehaviour
         }
     }
 
-    public void Win()
+    public void Win(MonsterData monster)
     {
+        if (monster.hp <= 0)
+        {
+            StartCoroutine(EndEnCounter(3.0f));
+        }
+    }
 
+    private IEnumerator EndEnCounter(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Debug.Log("전투 승리");
+        SceneManager.LoadScene("01.Village");
+        InteractionManager.Instance.changeScene = false; //잠긴 기능 해제
     }
     #endregion
 }

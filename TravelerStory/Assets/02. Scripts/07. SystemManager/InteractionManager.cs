@@ -21,7 +21,7 @@ public class InteractionManager : MonoBehaviour
 
     [Header("인벤토리/스킬/장비")]
     [SerializeField] private GameObject inventory;
-    [SerializeField] private GameObject Equipment;
+    [SerializeField] private GameObject equipment;
     [SerializeField] private GameObject skill;
     [SerializeField] private GameObject status;
 
@@ -76,13 +76,11 @@ public class InteractionManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(Instance);
+            Destroy(gameObject);
             return;
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
-
-        Connect();
     }
 
     void Update()
@@ -108,7 +106,7 @@ public class InteractionManager : MonoBehaviour
 
             if (inputP)
             {
-                Equipment.SetActive(!Equipment.activeSelf);
+                equipment.SetActive(!equipment.activeSelf);
             }
 
             if (inputK)
@@ -139,19 +137,31 @@ public class InteractionManager : MonoBehaviour
         }
     }
 
-    public void Connect()
+    private void OnEnable()
     {
-        GameObject cInventory = GameObject.Find("Inventory");
-        GameObject cEquipment = GameObject.Find("Equipment");
-        GameObject cStore = GameObject.Find("Store");
-        GameObject cSkillList = GameObject.Find("Skill");
-        GameObject cStatus = GameObject.Find("Status");
+        SceneManager.sceneLoaded += SceneLoaded;
+    }
 
-        if (cInventory != null) this.cInventory = cInventory.GetComponent<Inventory>();
-        if (cEquipment != null) cEquipMent = cEquipment.GetComponent<EquipMent>();
-        if (cStore != null) this.cStore = cStore.GetComponent<Store>();
-        if (cSkillList != null) this.cSkillList = cSkillList.GetComponent<SkillList>();
-        if (cStatus != null) this.cStatus = cStatus.GetComponent<Status>();
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= SceneLoaded;
+    }
+
+    private void SceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
+    {
+        cInventory = FindObjectOfType<Inventory>(true);
+        cEquipMent = FindObjectOfType<EquipMent>(true);
+        cStore = FindObjectOfType<Store>(true);
+        cGold = FindObjectOfType<Gold>(true);
+        cMonster = FindObjectOfType<Monster>(true);
+        cSkillList = FindObjectOfType<SkillList>(true);
+        cStatus = FindObjectOfType<Status>(true);
+
+        if (inventory == null && cInventory != null) inventory = cInventory.gameObject;
+        if (equipment == null && cEquipMent != null) equipment = cEquipMent.gameObject;
+        if (skill == null && cSkillList != null) skill = cSkillList.gameObject;
+        if (status == null && cStatus != null) status = cStatus.gameObject;
+        if (store == null && cStore != null) store = cStore.gameObject;
     }
 
     public void EnCounter(bool check, MonsterData monsterData)
@@ -197,13 +207,15 @@ public class InteractionManager : MonoBehaviour
     {
         if (slot.Item.recoveryHp > 0 && slot.Item.recoveryMp == 0)
         {
-            PlayerStatus.Instance().ModifyHP(slot.Item.recoveryHp);
             Debug.Log($"현재 HP:{PlayerStatus.Instance().hp}");
 
             //물약 사용 조건 미충족 시 카운트 갱신 방어
             if (useItem)
             {
+                PlayerStatus.Instance().ModifyHP(slot.Item.recoveryHp);
                 slot.Item.counter -= 1;
+                Player.Instance.ChangeBarAmount();
+                Player.Instance.CurrentStatusText();
             }
 
             if (slot.Item.counter <= 0)
@@ -213,12 +225,14 @@ public class InteractionManager : MonoBehaviour
         }
         else if (slot.Item.recoveryMp > 0 && slot.Item.recoveryHp == 0)
         {
-            PlayerStatus.Instance().ModifyMP(slot.Item.recoveryMp);
             Debug.Log($"현제 MP:{PlayerStatus.Instance().mp}");
 
             if (useItem)
             {
+                PlayerStatus.Instance().ModifyMP(slot.Item.recoveryMp);
                 slot.Item.counter -= 1;
+                Player.Instance.ChangeBarAmount();
+                Player.Instance.CurrentStatusText();
             }
 
             if (slot.Item.counter <= 0)

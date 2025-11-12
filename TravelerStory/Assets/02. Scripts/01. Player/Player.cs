@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 {
     #region field
     public static Player Instance;
+    public PlayerStatus playerStatus;
 
     [Header("이동")]
     private float moveSpeed = 5.0f;
@@ -18,8 +19,10 @@ public class Player : MonoBehaviour
     [SerializeField] private Image mpImage;
     [SerializeField] private TextMeshProUGUI hpText;
     [SerializeField] private TextMeshProUGUI mpText;
-
     [SerializeField] private Image smallHpImage;
+
+    [Header("스킬이펙트")]
+    [SerializeField] public SkillEffect skillEffect;
 
     //컴포넌트
     private Rigidbody2D rb;
@@ -31,17 +34,20 @@ public class Player : MonoBehaviour
     {
         if (Instance != null)
         {
-            Destroy(Instance);
+            Destroy(gameObject);
             return;
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        playerStatus = PlayerStatus.Instance();
 
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
 
         CurrentStatusText();
+        ChangeBarAmount();
 
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -89,9 +95,10 @@ public class Player : MonoBehaviour
 
     public void ChangeBarAmount()
     {
-        hpImage.fillAmount = PlayerStatus.instance.hp / PlayerStatus.instance.MaxHp;
+        hpImage.fillAmount = PlayerStatus.Instance().hp / PlayerStatus.Instance().MaxHp;
+        mpImage.fillAmount = PlayerStatus.Instance().mp / PlayerStatus.Instance().MaxMp;
+        if (smallHpImage == null) return;
         smallHpImage.fillAmount = PlayerStatus.instance.hp / PlayerStatus.instance.MaxHp;
-        mpImage.fillAmount = PlayerStatus.instance.mp / PlayerStatus.instance.MaxMp;
     }
 
     public void CurrentStatusText()
@@ -117,6 +124,27 @@ public class Player : MonoBehaviour
         if (smallHpImage != null) this.smallHpImage = smallHpImage.GetComponent<Image>();
 
         CurrentStatusText();
+        ChangeBarAmount();
+    }
+
+    public void AttackMotion()
+    {
+        anim.SetTrigger("Attack");
+    }
+
+    public void DoubleAttackMotion()
+    {
+        anim.SetTrigger("DoubleAttack");
+    }
+
+    public void Hit()
+    {
+        anim.SetTrigger("Hit");
+    }
+
+    public void Death()
+    {
+        anim.SetBool("Death", true);
     }
     #endregion
 }
