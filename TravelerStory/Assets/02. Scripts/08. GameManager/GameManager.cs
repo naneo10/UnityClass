@@ -24,6 +24,10 @@ public class GameManager : MonoBehaviour
     public PlayerBattle cPlayerBattle;
     public Monster cMonster;
     public UIManager cUIManager;
+    public BattleInventory cBattleInventory;
+
+    //아이템 사용조건 확인
+    public bool useItem;
 
     [Header("스폰 포인트")]
     [SerializeField] Transform PlayerSpawnPoint;
@@ -50,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        SetupScene();
+        SpawnPlayer();
     }
 
     #region method
@@ -70,16 +74,13 @@ public class GameManager : MonoBehaviour
         GameObject cPlayerBattle = GameObject.Find("PlayerBattle");
         GameObject cMonster = GameObject.Find("Monster");
         GameObject cUIManager = GameObject.Find("UIManager");
+        GameObject cBattleInventory = GameObject.Find("ItemPage");
 
         if (playerObj != null) Player = playerObj.GetComponent<Transform>();
         if (cPlayerBattle != null) this.cPlayerBattle = cPlayerBattle.GetComponent<PlayerBattle>();
         if (cMonster != null) this.cMonster = cMonster.GetComponent<Monster>();
         if (cUIManager != null) this.cUIManager = cUIManager.GetComponent<UIManager>();
-    }
-
-    public void SetupScene()
-    {
-        SpawnPlayer();
+        if (cBattleInventory != null) this.cBattleInventory = cBattleInventory.GetComponent<BattleInventory>();
     }
 
     public void SpawnPlayer()
@@ -113,7 +114,7 @@ public class GameManager : MonoBehaviour
                             break;
                         case SelectType.ItemBack:
                             {
-
+                                cUIManager.CloseItem();
                             }
                             break;
                         case SelectType.Skill01:
@@ -137,6 +138,59 @@ public class GameManager : MonoBehaviour
                             }
                             break;
                     }
+                }
+                break;
+        }
+    }
+
+    private void UseItem(BattleInventorySlot slot)
+    {
+        if (slot.ItemData.recoveryHp > 0 && slot.ItemData.recoveryMp == 0)
+        {
+            PlayerStatus.Instance().ModifyHP(slot.ItemData.recoveryHp);
+            Debug.Log($"현재 HP:{PlayerStatus.Instance().hp}");
+
+            //물약 사용 조건 미충족 시 카운트 갱신 방어
+            if (useItem)
+            {
+                slot.ItemData.counter -= 1;
+            }
+
+            if (slot.ItemData.counter <= 0)
+            {
+                cBattleInventory.RemoveItem(slot.ItemData);
+            }
+        }
+        else if (slot.ItemData.recoveryMp > 0 && slot.ItemData.recoveryHp == 0)
+        {
+            PlayerStatus.Instance().ModifyMP(slot.ItemData.recoveryMp);
+            Debug.Log($"현제 MP:{PlayerStatus.Instance().mp}");
+
+            if (useItem)
+            {
+                slot.ItemData.counter -= 1;
+            }
+
+            if (slot.ItemData.counter <= 0)
+            {
+                cBattleInventory.RemoveItem(slot.ItemData);
+            }
+        }
+    }
+
+    public void OnItemClicked(BattleInventorySlot slot, PointerEventData eventData)
+    {
+        if (slot.ItemData == null)
+        {
+            Debug.Log("빈 슬롯 클릭");
+            return;
+        }
+
+        switch (eventData.button)
+        {
+            case PointerEventData.InputButton.Left:
+                {
+                    UseItem(slot);
                 }
                 break;
         }

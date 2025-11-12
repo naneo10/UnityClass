@@ -44,6 +44,17 @@ public class InteractionManager : MonoBehaviour
         get { return lastMonster; }
     }
 
+    private List<ItemDataSO> saveItem = new List<ItemDataSO>();
+    public List<ItemDataSO> SaveItem
+    {
+        get { return saveItem; }
+        set
+        {
+            List<ItemDataSO> save = value;
+            saveItem = save.Where(x => x.expendables).ToList();
+        }
+    }
+
     public bool changeScene = false;
 
     //사용조건 충족 확인
@@ -114,6 +125,7 @@ public class InteractionManager : MonoBehaviour
             if (inputF && monsterRangeIn)
             {
                 lastMonster = new List<MonsterSlot>(Instance.MonstersInRange);
+                saveItem = new List<ItemDataSO>(cInventory.items);
                 SceneManager.LoadScene("02.EnCounter");
 
                 Player.Instance.sr.flipX = false;
