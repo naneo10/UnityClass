@@ -3,6 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic; //list<> 쓰기 위해서 필요 .Contains() 사용 가능, .Any() 사용 불가능
 using System.Linq;
+using Unity.VisualScripting;
 
 public class InteractionManager : MonoBehaviour
 {
@@ -193,53 +194,47 @@ public class InteractionManager : MonoBehaviour
             monstersInRange.Remove(monster);
         }
 
-        if (monstersInRange.Count > 0)
-        {
-            EnCounter(true, monstersInRange[0].monsterData);
-        }
-        else
-        {
-            OutCounter(false, monster.monsterData);
-        }
+        OutCounter(false, monster.monsterData);
     }
 
     private void UseItem(Slot slot)
     {
         if (slot.Item.recoveryHp > 0 && slot.Item.recoveryMp == 0)
         {
-            Debug.Log($"현재 HP:{PlayerStatus.Instance().hp}");
+            if (PlayerStatus.instance.hp < PlayerStatus.instance.MaxHp) useItem = true;
 
             //물약 사용 조건 미충족 시 카운트 갱신 방어
             if (useItem)
             {
                 PlayerStatus.Instance().ModifyHP(slot.Item.recoveryHp);
                 slot.Item.counter -= 1;
-                Player.Instance.ChangeBarAmount();
-                Player.Instance.CurrentStatusText();
             }
 
             if (slot.Item.counter <= 0)
             {
                 cInventory.RemoveItem(slot.Item);
             }
+
+            if (PlayerStatus.instance.hp >= PlayerStatus.instance.MaxHp) useItem = false;
         }
         else if (slot.Item.recoveryMp > 0 && slot.Item.recoveryHp == 0)
         {
-            Debug.Log($"현제 MP:{PlayerStatus.Instance().mp}");
+            if (PlayerStatus.instance.mp < PlayerStatus.instance.MaxMp) useItem = true;
 
             if (useItem)
             {
                 PlayerStatus.Instance().ModifyMP(slot.Item.recoveryMp);
                 slot.Item.counter -= 1;
-                Player.Instance.ChangeBarAmount();
-                Player.Instance.CurrentStatusText();
             }
 
             if (slot.Item.counter <= 0)
             {
                 cInventory.RemoveItem(slot.Item);
             }
+
+            if (PlayerStatus.instance.mp >= PlayerStatus.instance.MaxMp) useItem = false;
         }
+        cInventory.FreshSlot();
     }
 
     private void UseEquipment(Slot slot)
@@ -267,6 +262,8 @@ public class InteractionManager : MonoBehaviour
                     {
                         //HP,MP Potion
                         UseItem(slot);
+                        Player.Instance.ChangeBarAmount();
+                        Player.Instance.CurrentStatusText();
                     }
                     else if (slot.Item.equipment)
                     {

@@ -40,15 +40,33 @@ public class Inventory : MonoBehaviour
 
     public void AddItem(ItemDataSO item)
     {
-        if (items.Count < slots.Length)
+        ItemDataSO duplication = null;
+
+        if (item.recoveryHp > 0 && item.recoveryMp == 0)
         {
-            items.Add(item);
-            FreshSlot();
+            duplication = items.Find(x => x.recoveryHp > 0);
+        }
+        else if (item.recoveryMp > 0 && item.recoveryHp == 0)
+        {
+            duplication = items.Find(x => x.recoveryMp > 0);
+        }
+
+        if (items.Count >= slots.Length)
+        {
+            print("슬롯이 가득 차 있습니다.");
+            return;
+        }
+
+        if (duplication != null)
+        {
+            duplication.counter++;
         }
         else
         {
-            print("슬롯이 가득 차 있습니다.");
+            items.Add(item);
         }
+
+        FreshSlot();
     }
 
     public void RemoveItem(ItemDataSO item)

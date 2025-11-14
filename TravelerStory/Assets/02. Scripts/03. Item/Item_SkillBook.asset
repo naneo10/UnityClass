@@ -23,6 +23,7 @@ MonoBehaviour:
   recoveryHp: 0
   recoveryMp: 0
   counter: 0
+  sellCounter: 1
   equipment: 1
   helmet: 0
   armor: 0

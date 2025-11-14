@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static GameManager;
@@ -33,8 +34,7 @@ public class PlayerBattle : MonoBehaviour
 
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
     {
-        GameObject cBattleInventory = GameObject.Find("ItemPage");
-        if (cBattleInventory != null) this.cBattleInventory = cBattleInventory.GetComponent<BattleInventory>();
+        cBattleInventory = FindObjectOfType<BattleInventory>(true);
     }
 
     public void Attack(PlayerStatus player, MonsterData monster)
@@ -66,12 +66,12 @@ public class PlayerBattle : MonoBehaviour
     {
         if (slot.ItemData.recoveryHp > 0 && slot.ItemData.recoveryMp == 0)
         {
-            playerStatus.ModifyHP(slot.ItemData.recoveryHp);
-            Debug.Log($"현재 HP:{playerStatus.hp}");
+            if (playerStatus.hp < playerStatus.MaxHp) useItem = true;
 
             //물약 사용 조건 미충족 시 카운트 갱신 방어
             if (useItem)
             {
+                playerStatus.ModifyHP(slot.ItemData.recoveryHp);
                 slot.ItemData.counter -= 1;
             }
 
@@ -79,14 +79,16 @@ public class PlayerBattle : MonoBehaviour
             {
                 cBattleInventory.RemoveItem(slot.ItemData);
             }
+
+            if (playerStatus.hp >= playerStatus.MaxHp) useItem = false;
         }
         else if (slot.ItemData.recoveryMp > 0 && slot.ItemData.recoveryHp == 0)
         {
-            playerStatus.ModifyMP(slot.ItemData.recoveryMp);
-            Debug.Log($"현제 MP:{playerStatus.mp}");
+            if (playerStatus.mp < playerStatus.MaxMp) useItem = true;
 
             if (useItem)
             {
+                playerStatus.ModifyMP(slot.ItemData.recoveryMp);
                 slot.ItemData.counter -= 1;
             }
 
@@ -94,7 +96,10 @@ public class PlayerBattle : MonoBehaviour
             {
                 cBattleInventory.RemoveItem(slot.ItemData);
             }
+
+            if (playerStatus.mp >= playerStatus.MaxMp) useItem = false;
         }
+        cBattleInventory.FreshSlot();
     }
 
     public void Win(MonsterData monster)

@@ -174,6 +174,8 @@ public class GameManager : MonoBehaviour
             case PointerEventData.InputButton.Left:
                 {
                     cPlayerBattle.UseItem(slot);
+                    Player.Instance.ChangeBarAmount();
+                    Player.Instance.CurrentStatusText();
                 }
                 break;
         }

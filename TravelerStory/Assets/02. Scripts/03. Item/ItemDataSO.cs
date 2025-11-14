@@ -18,7 +18,8 @@ public class ItemDataSO : ScriptableObject
     public float recoveryHp;
     public float recoveryMp;
 
-    public int counter;
+    public int counter; //소지하고 있는 아이템 수
+    public int sellCounter; //판매 묶음 갯수
 
     //장비 아이템
     [Header("장비 아이템")]

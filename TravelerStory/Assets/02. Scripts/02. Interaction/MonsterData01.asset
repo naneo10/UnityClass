@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MonsterData01
   m_EditorClassIdentifier: 
   monsterName: FrankBlue
-  hp: 220
+  hp: 180
   mp: 200
   damage: 30
   speed: 10

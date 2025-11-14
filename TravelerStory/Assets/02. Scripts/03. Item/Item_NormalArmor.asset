@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: NomalArmor
   damage: 0
+  skillDamage: 0
   defense: 10
   speed: 0
   price: 125
@@ -22,6 +23,7 @@ MonoBehaviour:
   recoveryHp: 0
   recoveryMp: 0
   counter: 0
+  sellCounter: 1
   equipment: 1
   helmet: 0
   armor: 1
