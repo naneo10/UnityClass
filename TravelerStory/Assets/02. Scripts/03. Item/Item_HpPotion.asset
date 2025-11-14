@@ -22,7 +22,7 @@ MonoBehaviour:
   expendables: 1
   recoveryHp: 100
   recoveryMp: 0
-  counter: 1
+  counter: 2
   sellCounter: 1
   equipment: 0
   helmet: 0

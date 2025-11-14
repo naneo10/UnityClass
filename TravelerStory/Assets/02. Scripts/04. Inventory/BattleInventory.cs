@@ -4,7 +4,7 @@ using UnityEngine;
 public class BattleInventory : MonoBehaviour
 {
     #region field
-    private List<ItemDataSO> Items = InteractionManager.Instance.SaveItem;
+    public List<ItemDataSO> Items = InteractionManager.Instance.SaveItem;
 
 
     [SerializeField] private Transform ParentSlot;

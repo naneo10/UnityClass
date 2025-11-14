@@ -140,11 +140,14 @@ public class InteractionManager : MonoBehaviour
 
     private void OnEnable()
     {
+        Debug.Log("Interaction OnEnable");
         SceneManager.sceneLoaded += SceneLoaded;
+        cInventory.SaveItem(this);
     }
 
     private void OnDisable()
     {
+        Debug.Log("Interaction OnDisable");
         SceneManager.sceneLoaded -= SceneLoaded;
     }
 

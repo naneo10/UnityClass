@@ -76,5 +76,10 @@ public class Inventory : MonoBehaviour
         items.Remove(item);
         FreshSlot();
     }
+
+    public void SaveItem(InteractionManager interactionManager)
+    {
+        items = interactionManager.SaveItem;
+    }
     #endregion
 }

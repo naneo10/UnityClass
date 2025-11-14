@@ -21,7 +21,6 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     public Transform PlayerObj;
-    //public PlayerStatus cPlayerStatus;
     public PlayerBattle cPlayerBattle;
     public Monster cMonster;
     public UIManager cUIManager;
@@ -43,8 +42,6 @@ public class GameManager : MonoBehaviour
         //씬 전환 후 사용되지 않는 기능 잠금 I, K, N, P 등
         InteractionManager.Instance.changeScene = true;
         if (!InteractionManager.Instance.changeScene) return;
-
-        //cPlayerStatus = PlayerStatus.Instance();
 
         Debug.Log($"캐릭터 데미지 : {PlayerStatus.instance.damage}, 스킬 데미지 : {PlayerStatus.instance.skillDamage}");
     }
@@ -99,7 +96,10 @@ public class GameManager : MonoBehaviour
                                 cMonster.CurrentStatus(monster);
                                 cMonster.monsterBattle.Hit();
                                 cMonster.monsterBattle.Die(monster);
-                                cPlayerBattle.Win(monster);
+                                cPlayerBattle.Win(
+                                    monster,
+                                    InteractionManager.Instance,
+                                    cPlayerBattle.cBattleInventory);
                             }
                             break;
                         case SelectType.Skill:
@@ -125,7 +125,10 @@ public class GameManager : MonoBehaviour
                                 Player.Instance.CurrentStatusText();
                                 cMonster.monsterBattle.Hit();
                                 cMonster.monsterBattle.Die(monster);
-                                cPlayerBattle.Win(monster);
+                                cPlayerBattle.Win(
+                                    monster,
+                                    InteractionManager.Instance,
+                                    cPlayerBattle.cBattleInventory);
                             }
                             break;
                         case SelectType.IceSpear:
@@ -136,7 +139,10 @@ public class GameManager : MonoBehaviour
                                 Player.Instance.CurrentStatusText();
                                 cMonster.monsterBattle.Hit();
                                 cMonster.monsterBattle.Die(monster);
-                                cPlayerBattle.Win(monster);
+                                cPlayerBattle.Win(
+                                    monster,
+                                    InteractionManager.Instance,
+                                    cPlayerBattle.cBattleInventory);
                             }
                             break;
                         case SelectType.DoubleAttack:
@@ -147,7 +153,10 @@ public class GameManager : MonoBehaviour
                                 Player.Instance.CurrentStatusText();
                                 cMonster.monsterBattle.Hit();
                                 cMonster.monsterBattle.Die(monster);
-                                cPlayerBattle.Win(monster);
+                                cPlayerBattle.Win(
+                                    monster,
+                                    InteractionManager.Instance,
+                                    cPlayerBattle.cBattleInventory);
                             }
                             break;
                         case SelectType.Back:

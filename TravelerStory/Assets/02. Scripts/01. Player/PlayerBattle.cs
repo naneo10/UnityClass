@@ -102,20 +102,20 @@ public class PlayerBattle : MonoBehaviour
         cBattleInventory.FreshSlot();
     }
 
-    public void Win(MonsterData monster)
+    public void Win(MonsterData monster, InteractionManager interaction, BattleInventory battleInventory)
     {
         if (monster.hp <= 0)
         {
             StartCoroutine(EndEnCounter(3.0f));
+            InteractionManager.Instance.changeScene = false; //잠긴 기능 해제
+            interaction.SaveItem = battleInventory.Items;
         }
     }
 
     private IEnumerator EndEnCounter(float delay)
     {
         yield return new WaitForSeconds(delay);
-        Debug.Log("전투 승리");
         SceneManager.LoadScene("01.Village");
-        InteractionManager.Instance.changeScene = false; //잠긴 기능 해제
     }
     #endregion
 }
