@@ -3,8 +3,8 @@ using UnityEngine;
 public abstract class Enemy : MonoBehaviour, IDamageble
 {
     //이동속도
-    [SerializeField] private float speed; //체력
-    [SerializeField] private int health; //속도
+    [SerializeField] private float speed; //속도
+    [SerializeField] private int health; //체력
     [SerializeField] private Sprite[] sprites; //스프라이트 배열
 
     protected SpriteRenderer spriteRenderer;

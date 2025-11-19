@@ -14,7 +14,8 @@ where T : MonoBehaviour
 :만약에 T에 int, string 게임오브젝트를 쓸 수 없음
 :즉, 풀에 들어올 타입은 반드시 유니티 컴포넌트(스크립트)여야 한다는 규칙을 강제
 
-:ObjectPool는 제네릭 클래스 이고 T라는 타입으로 만들수 있는데 단, 그 타입은 반드시 MonoBehaviour를 상속해야 한다
+:ObjectPool는 제네릭 클래스 이고 T라는 타입으로 만들수 있는데 단,
+그 타입은 반드시 MonoBehaviour를 상속해야 한다
 
 ObjectPool<T> : MonoBehaviour 이렇게 쓰면 컴포넌트가 된다. 무조건 오브젝트를 만들어서 사용해야된다
 :데이터 구조로서 사용이된다 gameObject 같은걸 쓰기 어려워진다
@@ -36,7 +37,7 @@ public class ObjectPool<T> where T : MonoBehaviour //T : MonoBehaviour로 제약을 
     /// </summary>
     /// <param name="prefab">복제할 원본 프리팹</param> //매개변수들을 설명할 때 사용하는 용도
     /// <param name="initCount">처음에 몇 개를 미리 만들지 정해두는 용도</param>
-    /// <param name="parent">Root를 어떤 부모 아래에 둘지</param>
+    /// <param name="parent">Root를 어떤 부모 아래에 둘지, 아무것도 전달하지 않으면 기본 값 null</param>
 
     public ObjectPool(T prefab, int initCount, Transform parent = null)
     {
