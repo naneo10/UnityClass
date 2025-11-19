@@ -46,4 +46,22 @@ public class PoolManager : MonoBehaviour
             return null;
         }
     }
+
+    public void ReturnPool<T>(T instance) where T : MonoBehaviour
+    {
+        if (instance == null) return;
+
+        if (!pools.TryGetValue(instance.gameObject.name, out var box))
+        {
+            Destroy(instance.gameObject);
+            return;
+        }
+
+        var pool = box as ObjectPool<T>;
+
+        if (pool != null)
+        {
+            pool.Enqueue(instance);
+        }
+    }
 }

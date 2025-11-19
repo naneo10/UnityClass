@@ -36,7 +36,7 @@ public class ObjectPool<T> where T : MonoBehaviour
         return inst;
     }
 
-    public void Equeue(T instance) //넣고자 하는 오브젝트 인자로 받고
+    public void Enqueue(T instance) //넣고자 하는 오브젝트 인자로 받고
     {
         if (instance == null) return; //방어코드
 
