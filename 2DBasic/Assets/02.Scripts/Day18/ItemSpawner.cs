@@ -13,12 +13,9 @@ public class ItemSpawner : MonoBehaviour
     [SerializeField] int startSpawncount = 5;
     [SerializeField] int maxCount = 20;
     [SerializeField] float spawnInterval = 1.5f;
-    
-    
+
     private float timer;
 
-
-    // Start is called before the first frame update
     void Start()
     {
         if (center==null)
@@ -33,7 +30,6 @@ public class ItemSpawner : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         timer += Time.deltaTime;
