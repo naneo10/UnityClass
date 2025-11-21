@@ -4,7 +4,7 @@ using UnityEngine;
 public class PoolManager : MonoBehaviour
 {
     public static PoolManager Instance { get; private set; }
-    private Dictionary<string, object> pools = new Dictionary<string, object>();
+    public Dictionary<string, object> pools = new Dictionary<string, object>();
 
     void Awake()
     {

@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(ItemTypeA))]
 public class ItemSpawner : MonoBehaviour
 {
     [Header("프리팹")]
@@ -11,11 +12,11 @@ public class ItemSpawner : MonoBehaviour
     [SerializeField] private float spawnInterval = 1.5f; //스폰 간격
     [SerializeField] private float spawnOffset = 25.0f; //스폰 위치
     [SerializeField] private float spawnY = 2.0f; //스폰될 y좌표
-    public int itemTotalCount = 17; //아이템 총 갯수
+
+    private ItemTypeA itemTypeA;
+    public int spawnCount = 20;
 
     private float timer;
-
-    private List<ItemTypeA> items = new List<ItemTypeA>();
 
     private void Awake()
     {
@@ -24,7 +25,13 @@ public class ItemSpawner : MonoBehaviour
             center = this.transform;
         }
 
-        SetupItems();
+        itemTypeA = GetComponent<ItemTypeA>();
+        Managers.Pool.CreatePool(itemPrefab, spawnCount);
+    }
+
+    private void Start()
+    {
+        StartCoroutine(AutoSpawnCo());
     }
 
     private void Update()
@@ -33,7 +40,6 @@ public class ItemSpawner : MonoBehaviour
         if (timer >= spawnInterval)
         {
             timer -= spawnInterval;
-            
         }
     }
 
@@ -41,29 +47,22 @@ public class ItemSpawner : MonoBehaviour
     {
         if (itemPrefab == null) return;
 
-        for (int i = 0; i < itemTotalCount; i++)
-        {
-            Vector2 rand = Random.insideUnitSphere * spawnOffset;
-            Vector3 pos = center.position + new Vector3(rand.x, spawnY, rand.y);
+        ItemTypeA itemTypeA = Managers.Pool.GetFromPool(itemPrefab);
 
-            var item = Instantiate(itemPrefab, pos, Quaternion.identity);
-            item.gameObject.SetActive(false);
-            items.Add(item);
-        }
+        Vector2 rand = Random.insideUnitSphere * spawnOffset;
+        Vector3 pos = center.position + new Vector3(rand.x, spawnY, rand.y);
+
+        itemTypeA.transform.SetPositionAndRotation(pos, Quaternion.identity);
+        itemTypeA.gameObject.SetActive(true);
     }
 
-    //private ItemTypeA GetFromItem()
-    //{
-    //    for (int i = 0; i < items.Count; i++)
-    //    {
-    //        var item = items[i];
-
-    //        if (item != null && item.gameObject.activeInHierarchy)
-    //        {
-    //            return item;
-    //        }
-    //    }
-
-    //    var newItem = 
-    //}
+    private IEnumerator AutoSpawnCo()
+    {
+        for (int i = 0; i < spawnCount; i++)
+        {
+            SetupItems();
+            Debug.Log($"쿨타임 : {itemTypeA.coolTime}");
+            yield return new WaitForSeconds(itemTypeA.coolTime);
+        }
+    }
 }

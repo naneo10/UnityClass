@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 372410009}
   - component: {fileID: 372410008}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Ground
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -574,6 +574,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &1171316999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1171316992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 199385d646e1be64ca417f63d1c59735, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1370061636
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -584,7 +596,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 100348, guid: 6788413dff62c534d8ca610faef3c7a2, type: 3}
       propertyPath: m_Name
-      value: BoxUnityChan
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 400348, guid: 6788413dff62c534d8ca610faef3c7a2, type: 3}
       propertyPath: m_LocalPosition.x
@@ -643,64 +655,75 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 100348, guid: 6788413dff62c534d8ca610faef3c7a2, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1171316996}
+    - targetCorrespondingSourceObject: {fileID: 100348, guid: 6788413dff62c534d8ca610faef3c7a2, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1171316999}
   m_SourcePrefab: {fileID: 100100000, guid: 6788413dff62c534d8ca610faef3c7a2, type: 3}
---- !u!1001 &6385988162886099685
-PrefabInstance:
+--- !u!1 &1438482355
+GameObject:
   m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1438482357}
+  - component: {fileID: 1438482356}
+  - component: {fileID: 1438482358}
+  m_Layer: 0
+  m_Name: ItemSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1438482356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438482355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c19e8637b0112441bf924798668bde4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemPrefab: {fileID: 6898064060530143754, guid: 73963ad58912f1b4688fdcc6d313b6a4, type: 3}
+  center: {fileID: 1438482357}
+  spawnInterval: 1.5
+  spawnOffset: 25
+  spawnY: 2
+  spawnCount: 20
+--- !u!4 &1438482357
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438482355}
   serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2046844997326579725, guid: 73963ad58912f1b4688fdcc6d313b6a4, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2046844997326579725, guid: 73963ad58912f1b4688fdcc6d313b6a4, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.789
-      objectReference: {fileID: 0}
-    - target: {fileID: 2046844997326579725, guid: 73963ad58912f1b4688fdcc6d313b6a4, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.764
-      objectReference: {fileID: 0}
-    - target: {fileID: 2046844997326579725, guid: 73963ad58912f1b4688fdcc6d313b6a4, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2046844997326579725, guid: 73963ad58912f1b4688fdcc6d313b6a4, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2046844997326579725, guid: 73963ad58912f1b4688fdcc6d313b6a4, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2046844997326579725, guid: 73963ad58912f1b4688fdcc6d313b6a4, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2046844997326579725, guid: 73963ad58912f1b4688fdcc6d313b6a4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2046844997326579725, guid: 73963ad58912f1b4688fdcc6d313b6a4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2046844997326579725, guid: 73963ad58912f1b4688fdcc6d313b6a4, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8597466591194470243, guid: 73963ad58912f1b4688fdcc6d313b6a4, type: 3}
-      propertyPath: m_Name
-      value: Cube
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 73963ad58912f1b4688fdcc6d313b6a4, type: 3}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 4}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1438482358
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438482355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f86c04fc0422db0458ae4e193fa874aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentPoint: 0
+  coolTime: 2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -709,4 +732,4 @@ SceneRoots:
   - {fileID: 705507995}
   - {fileID: 372410011}
   - {fileID: 1370061636}
-  - {fileID: 6385988162886099685}
+  - {fileID: 1438482357}

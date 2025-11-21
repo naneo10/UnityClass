@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public abstract class Item : MonoBehaviour, IPointable
 {
-    private ItemSpawner spawner;
-    private int currentPoint = 0;
+    public int currentPoint = 0;
     private int point = 1;
 
     protected Renderer itemColor;
@@ -16,40 +14,26 @@ public abstract class Item : MonoBehaviour, IPointable
         rd = GetComponent<Rigidbody>();
     }
 
-    #region 외부 스크립트 자동으로 가져오기
-    private void OnEnable()
-    {
-        SceneManager.sceneLoaded += OnSceneLoaded;
-    }
-
-    private void OnDisable()
-    {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
-    {
-        spawner = FindObjectOfType<ItemSpawner>(true);
-    }
-    #endregion
-
     public virtual void GetPoint(int point)
     {
         currentPoint += point;
         gameObject.SetActive(false);
+        Debug.Log("GetPoint 실행 Item.cs");
 
         //material color 변경 : https://dalbitdorong.tistory.com/9
-        if (currentPoint > spawner.itemTotalCount / 2 && currentPoint < spawner.itemTotalCount - 1)
+        var itemList = PoolManager.Instance.pools;
+
+        if (currentPoint > itemList.Count / 2 && currentPoint < itemList.Count - 1)
         {
             itemColor.material.color = new Color(216.0f / 255.0f, 255.0f / 255.0f, 255.0f / 255.0f);
         }
 
-        if (currentPoint == spawner.itemTotalCount - 1)
+        if (currentPoint == itemList.Count - 1)
         {
             itemColor.material.color = Color.green;
         }
 
-        if (currentPoint >= spawner.itemTotalCount)
+        if (currentPoint >= itemList.Count)
         {
             Clear();
         }
