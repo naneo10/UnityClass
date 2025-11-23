@@ -65,4 +65,10 @@ public class ItemSpawner : MonoBehaviour
             yield return new WaitForSeconds(itemTypeA.coolTime);
         }
     }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.white;
+        Gizmos.DrawWireSphere(transform.position, spawnOffset);
+    }
 }

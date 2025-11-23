@@ -1,4 +1,4 @@
 public interface IPointable
 {
-    void GetPoint(int point);
+    int GetPoint(int current, int point);
 }

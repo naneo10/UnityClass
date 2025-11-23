@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class CItem : MonoBehaviour
 {
-    [SerializeField] private bool isDestory = false;
+    [SerializeField] private bool isDestroy = false;
     public void Collect()
     {
-        if(isDestory)
+        if(isDestroy)
         {
-            Destroy(gameObject);    
+            Destroy(gameObject);
         }
         else
         {
