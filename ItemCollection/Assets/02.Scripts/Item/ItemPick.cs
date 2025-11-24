@@ -39,8 +39,7 @@ public class ItemPick : MonoBehaviour
             if (distance <= collectDistance)
             {
                 currentPoint = itemTypeA.GetPoint(currentPoint, itemTypeA.point);
-
-                itemTypeA.ChangeColor(currentPoint);
+                //itemTypeA.ChangeColor(currentPoint); : null오류 해결 안됨
             }
 
             if (currentPoint == 20)
