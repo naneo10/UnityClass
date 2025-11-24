@@ -2,8 +2,6 @@
 
 public abstract class Item : MonoBehaviour, IPointable
 {
-    public static Item Instance { get; private set; }
-
     protected Renderer itemColor;
     protected Rigidbody rd;
 
@@ -11,22 +9,12 @@ public abstract class Item : MonoBehaviour, IPointable
 
     protected virtual void Awake()
     {
-        if (Instance != null || Instance != this)
-        {
-            Destroy(Instance);
-            return;
-        }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-
         itemColor = gameObject.GetComponent<Renderer>();
         rd = GetComponent<Rigidbody>();
     }
 
     public virtual int GetPoint(int currentPoint, int point)
     {
-        gameObject.SetActive(false);
-
         return currentPoint += point;
     }
 

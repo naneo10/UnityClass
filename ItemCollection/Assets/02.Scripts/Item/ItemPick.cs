@@ -44,7 +44,7 @@ public class ItemPick : MonoBehaviour
 
             if (currentPoint == 20)
             {
-                GameManager.instance.Clear();
+                GameManager.Instance.Clear();
             }
 
             itemTypeA.transform.position = Vector3.Lerp(

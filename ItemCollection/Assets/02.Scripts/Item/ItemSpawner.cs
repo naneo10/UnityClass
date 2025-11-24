@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(ItemTypeA))]
 public class ItemSpawner : MonoBehaviour
@@ -47,7 +48,7 @@ public class ItemSpawner : MonoBehaviour
     {
         if (itemPrefab == null) return;
 
-        ItemTypeA itemTypeA = Managers.Pool.GetFromPool(itemPrefab);
+        itemTypeA = Managers.Pool.GetFromPool(itemPrefab);
 
         Vector2 rand = Random.insideUnitSphere * spawnOffset;
         Vector3 pos = center.position + new Vector3(rand.x, spawnY, rand.y);

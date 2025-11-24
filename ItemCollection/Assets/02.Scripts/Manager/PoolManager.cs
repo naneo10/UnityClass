@@ -8,12 +8,15 @@ public class PoolManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance == null)
         {
-            Destroy(Instance);
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
+        else
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void CreatePool<T>(T prefab, int initCount, Transform parent = null) where T : MonoBehaviour

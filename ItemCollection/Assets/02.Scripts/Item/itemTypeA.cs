@@ -10,4 +10,10 @@ public class ItemTypeA : Item
     {
         base.Awake();
     }
+
+    public override int GetPoint(int currentPoint, int point)
+    {
+        PoolManager.Instance.ReturnPool(this);
+        return base.GetPoint(currentPoint, point);
+    }
 }
