@@ -1820,14 +1820,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 479da43ec1cdafb408eb649265419638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPick: {fileID: 788974248}
-  time: {fileID: 1787545440}
-  point: {fileID: 2063613661}
-  clearUI: {fileID: 1560395868}
-  clearTime: {fileID: 1265821440}
-  bestClearTime: {fileID: 1370904755}
-  restartButton: {fileID: 50605256}
-  exitButton: {fileID: 1031107095}
+  itemPick: {fileID: 0}
+  time: {fileID: 0}
+  point: {fileID: 0}
+  clearUI: {fileID: 0}
+  clearTime: {fileID: 0}
+  bestClearTime: {fileID: 0}
+  restartButton: {fileID: 0}
+  exitButton: {fileID: 0}
 --- !u!4 &1642242638
 Transform:
   m_ObjectHideFlags: 0

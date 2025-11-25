@@ -64,17 +64,38 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
     {
-        //TextMeshProUGUI 스크립트 접근 : https://zetezz.tistory.com/entry/%EC%9C%A0%EB%8B%88%ED%8B%B0-TextMeshPro-%ED%95%A8%EC%88%98%EB%A5%BC-%EC%86%8C%EC%8A%A4%EC%97%90%EC%84%9C-%EC%A0%91%EA%B7%BC%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95
+        #region memo
+        /*
+        활성화된 오브젝트를 찾아서 들어가자 : https://jeong57.tistory.com/97
+        gameObject를 SetActive = false인 경우 스크립트도 같이 꺼진다
+        TextMeshProUGUI 스크립트 접근 : https://zetezz.tistory.com/entry/%EC%9C%A0%EB%8B%88%ED%8B%B0-TextMeshPro-%ED%95%A8%EC%88%98%EB%A5%BC-%EC%86%8C%EC%8A%A4%EC%97%90%EC%84%9C-%EC%A0%91%EA%B7%BC%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95
+        */
+        #endregion
+        //scripts
+        itemPick = FindObjectOfType<ItemPick>(true);
+
         //UI/TypoGraphic
-        time = transform.Find("Canvas/Time").gameObject.GetComponent<TextMeshProUGUI>();
-        point = transform.Find("Canvas/Point").gameObject.GetComponent<TextMeshProUGUI>();
+        time = GameObject.Find("Canvas")
+            .transform.Find("Time")
+            .gameObject.GetComponent<TextMeshProUGUI>();
+        point = GameObject.Find("Canvas")
+            .transform.Find("Point")
+            .gameObject.GetComponent<TextMeshProUGUI>();
 
         //UI/Clear
         clearUI = GameObject.Find("Panel");
-        clearTime = transform.Find("Canvas/Panel/ClearTime").gameObject.GetComponent<TextMeshProUGUI>();
-        bestClearTime = transform.Find("Canvas/Panel/BestClearTime").gameObject.GetComponent<TextMeshProUGUI>();
-        restartButton = transform.Find("Canvas/Panel/Restart").gameObject.GetComponent<Button>();
-        exitButton = transform.Find("Canvas/Panel/Exit").gameObject.GetComponent<Button>();
+        clearTime = GameObject.Find("Canvas")
+            .transform.Find("Panel/ClearTime")
+            .gameObject.GetComponent<TextMeshProUGUI>();
+        bestClearTime = GameObject.Find("Canvas")
+            .transform.Find("Panel/BestClearTime")
+            .gameObject.GetComponent<TextMeshProUGUI>();
+        restartButton = GameObject.Find("Canvas")
+            .transform.Find("Panel/Restart")
+            .gameObject.GetComponent<Button>();
+        exitButton = GameObject.Find("Canvas")
+            .transform.Find("Panel/Exit")
+            .gameObject.GetComponent<Button>();
     }
 
     private void ReStart()

@@ -59,8 +59,6 @@ public class Player : MonoBehaviour
             anim.SetBool(leftShiftHash, false);
         }
 
-
-
         //È¸Àü
         if (dir.sqrMagnitude > 0.1f)
         {
