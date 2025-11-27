@@ -20,6 +20,10 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button restartButton;
     [SerializeField] private Button exitButton;
 
+    [Header("Spawn")]
+    [SerializeField] Player player;
+    [SerializeField] Transform[] spawnPositions;
+
     private float playTime;
 
     private void Awake()
@@ -37,12 +41,6 @@ public class GameManager : MonoBehaviour
         playTime = 0.0f;
     }
 
-    void Start()
-    {
-        if (clearUI != null) clearUI.SetActive(false);
-        if (restartButton != null) restartButton.onClick.AddListener(ReStart);
-        if (exitButton != null) exitButton.onClick.AddListener(Exit);
-    }
 
     void Update()
     {
@@ -83,7 +81,9 @@ public class GameManager : MonoBehaviour
             .gameObject.GetComponent<TextMeshProUGUI>();
 
         //UI/Clear
-        clearUI = GameObject.Find("Panel");
+        clearUI = GameObject.Find("Canvas")
+            .transform.Find("Panel")
+            .gameObject;
         clearTime = GameObject.Find("Canvas")
             .transform.Find("Panel/ClearTime")
             .gameObject.GetComponent<TextMeshProUGUI>();
@@ -96,11 +96,33 @@ public class GameManager : MonoBehaviour
         exitButton = GameObject.Find("Canvas")
             .transform.Find("Panel/Exit")
             .gameObject.GetComponent<Button>();
+
+        //spawn
+        player = FindObjectOfType<Player>();
+        spawnPositions[0] = GameObject.Find("SpawnPosition")
+            .transform.Find("Spawn_01");
+        spawnPositions[1] = GameObject.Find("SpawnPosition")
+            .transform.Find("Spawn_02");
+        spawnPositions[2] = GameObject.Find("SpawnPosition")
+            .transform.Find("Spawn_03");
+
+        SceneLoad();
+        RandomPosition();
+    }
+
+    //Awake는 매번 실행되지만 적용되지 않음
+    //start에 뒀을 시 씬로드 할 경우 다시 불러와 적용되지 않음
+    private void SceneLoad() 
+    {
+        if (clearUI != null) clearUI.SetActive(false);
+        if (restartButton != null) restartButton.onClick.AddListener(ReStart);
+        if (exitButton != null) exitButton.onClick.AddListener(Exit);
     }
 
     private void ReStart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        playTime = 0.0f;
     }
 
     private void Exit()
@@ -115,6 +137,13 @@ public class GameManager : MonoBehaviour
     private void RefreshPoint()
     {
         point.text = "Point : " + itemPick.currentPoint.ToString() + " / 20";
+    }
+
+    private void RandomPosition()
+    {
+        var index = Random.Range(0, 3);
+        Debug.Log(index);
+        player.transform.position = spawnPositions[index].transform.position;
     }
 
     public void Clear()

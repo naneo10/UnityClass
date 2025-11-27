@@ -13,6 +13,14 @@ public class ItemPick : MonoBehaviour
     [Header("CountPoint")]
     public int currentPoint = 0;
 
+    [Header("Sound")]
+    private AudioSource audioSource;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     void Update()
     {
         PickUp();
@@ -39,7 +47,8 @@ public class ItemPick : MonoBehaviour
             if (distance <= collectDistance)
             {
                 currentPoint = itemTypeA.GetPoint(currentPoint, itemTypeA.point);
-                //itemTypeA.ChangeColor(currentPoint); : null오류 해결 안됨
+                audioSource.Play();
+                itemTypeA.ChangeColor(currentPoint);
             }
 
             if (currentPoint == 20)

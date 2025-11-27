@@ -27,7 +27,10 @@ public class ItemSpawner : MonoBehaviour
         }
 
         itemTypeA = GetComponent<ItemTypeA>();
-        Managers.Pool.CreatePool(itemPrefab, spawnCount);
+        //SceneLoaded 시 파괴되 없어지는 문제 poolmanager 자식으로 옮김으로 해결
+        //실패1. itemTypeA 즉 아이템을 싱글톤으로 작성시 20개의 오브젝트가 20개의 중복으로 인식
+        //결과1. 중복된 오브젝트 파괴
+        Managers.Pool.CreatePool(itemPrefab, spawnCount, PoolManager.Instance.transform);
     }
 
     private void Start()
