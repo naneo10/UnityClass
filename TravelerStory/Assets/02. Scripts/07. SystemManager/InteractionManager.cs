@@ -3,8 +3,8 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic; //list<> 쓰기 위해서 필요 .Contains() 사용 가능, .Any() 사용 불가능
 using System.Linq;
-using Unity.VisualScripting;
 
+[RequireComponent(typeof())]
 public class InteractionManager : MonoBehaviour
 {
     #region field
@@ -12,8 +12,6 @@ public class InteractionManager : MonoBehaviour
     public ItemDataSO itemDataSO;
 
     [Header("클래스 인스턴스")]
-    public Inventory cInventory;
-    public EquipMent cEquipMent;
     public Store cStore;
     public Gold cGold;
     public Monster cMonster;
@@ -45,7 +43,9 @@ public class InteractionManager : MonoBehaviour
         get { return lastMonster; }
     }
 
-    private List<ItemDataSO> saveItem;
+    private List<ItemDataSO> saveItem = new List<ItemDataSO>();
+    #region 장비 제외 물약만 옮겨가는건 되지만 다시 인벤토리로 옮길 때 장비탬은 사라져버림
+    /*
     public List<ItemDataSO> SaveItem
     {
         get { return saveItem; }
@@ -54,6 +54,12 @@ public class InteractionManager : MonoBehaviour
             List<ItemDataSO> save = value;
             saveItem = save.Where(x => x.expendables).ToList();
         }
+    }
+    */
+    #endregion
+    public List<ItemDataSO> SaveItem
+    {
+        get { return saveItem; }
     }
 
     public bool changeScene = false;
@@ -90,6 +96,7 @@ public class InteractionManager : MonoBehaviour
     }
 
     #region method
+    #region 스크립트 활성화 / 씬로드
     private void Active()
     {
         if (!changeScene)
@@ -124,7 +131,7 @@ public class InteractionManager : MonoBehaviour
             if (inputF && monsterRangeIn)
             {
                 lastMonster = new List<MonsterSlot>(Instance.MonstersInRange);
-                SaveItem = new List<ItemDataSO>(cInventory.items);
+                saveItem = new List<ItemDataSO>(Inventory.Instance.items);
                 SceneManager.LoadScene("02.EnCounter");
 
                 Player.Instance.sr.flipX = false;
@@ -138,11 +145,20 @@ public class InteractionManager : MonoBehaviour
         }
     }
 
+    public void SaveInventory(List<ItemDataSO> battleInventory)
+    {
+        saveItem = battleInventory;
+    }
+
+    public void LoadInventory() //전투 후 saveItem에 저장하는거 까지 구현 이제 인벤토리로 옮겨야됨
+    {
+        Inventory.Instance.LoadItem(this);
+    }
+
     private void OnEnable()
     {
         Debug.Log("Interaction OnEnable");
         SceneManager.sceneLoaded += SceneLoaded;
-        cInventory.SaveItem(this);
     }
 
     private void OnDisable()
@@ -153,21 +169,25 @@ public class InteractionManager : MonoBehaviour
 
     private void SceneLoaded(UnityEngine.SceneManagement.Scene scene, LoadSceneMode mode)
     {
-        cInventory = FindObjectOfType<Inventory>(true);
-        cEquipMent = FindObjectOfType<EquipMent>(true);
         cStore = FindObjectOfType<Store>(true);
         cGold = FindObjectOfType<Gold>(true);
         cMonster = FindObjectOfType<Monster>(true);
         cSkillList = FindObjectOfType<SkillList>(true);
         cStatus = FindObjectOfType<Status>(true);
-
-        if (inventory == null && cInventory != null) inventory = cInventory.gameObject;
-        if (equipment == null && cEquipMent != null) equipment = cEquipMent.gameObject;
+        //find 꺼져있는 오브젝트를 찾지 않는다
+        if (inventory == null) inventory = GameObject.Find("Canvas")
+                .transform.Find("Inventory")
+                .gameObject;
+        if (equipment == null) equipment = GameObject.Find("Canvas")
+                .transform.Find("Equipment")
+                .gameObject;
         if (skill == null && cSkillList != null) skill = cSkillList.gameObject;
         if (status == null && cStatus != null) status = cStatus.gameObject;
         if (store == null && cStore != null) store = cStore.gameObject;
     }
+    #endregion
 
+    #region 몬스터 범위 안에 들어갈 경우처리
     public void EnCounter(bool check, MonsterData monsterData)
     {
         monsterRangeIn = check;
@@ -199,7 +219,9 @@ public class InteractionManager : MonoBehaviour
 
         OutCounter(false, monster.monsterData);
     }
+    #endregion
 
+    #region 아이템 / 장비
     private void UseItem(Slot slot)
     {
         if (slot.Item.recoveryHp > 0 && slot.Item.recoveryMp == 0)
@@ -215,7 +237,7 @@ public class InteractionManager : MonoBehaviour
 
             if (slot.Item.counter <= 0)
             {
-                cInventory.RemoveItem(slot.Item);
+                Inventory.Instance.RemoveItem(slot.Item);
             }
 
             if (PlayerStatus.instance.hp >= PlayerStatus.instance.MaxHp) useItem = false;
@@ -232,17 +254,17 @@ public class InteractionManager : MonoBehaviour
 
             if (slot.Item.counter <= 0)
             {
-                cInventory.RemoveItem(slot.Item);
+                Inventory.Instance.RemoveItem(slot.Item);
             }
 
             if (PlayerStatus.instance.mp >= PlayerStatus.instance.MaxMp) useItem = false;
         }
-        cInventory.FreshSlot();
+        Inventory.Instance.FreshSlot();
     }
 
     private void UseEquipment(Slot slot)
     {
-        cEquipMent.AddEquipement(slot.Item);
+        EquipMent.Instance.AddEquipement(slot.Item);
     }
 
     public void OnSlotClicked(Slot slot, PointerEventData eventData)
@@ -284,7 +306,7 @@ public class InteractionManager : MonoBehaviour
 
     private void UnEquipment(EquipSlot equipSlot)
     {
-        cEquipMent.RemoveEquipment(equipSlot.Item);
+        EquipMent.Instance.RemoveEquipment(equipSlot.Item);
     }
 
     public void OnEquipmentClicked(EquipSlot equipSlot, PointerEventData eventData)
@@ -303,7 +325,9 @@ public class InteractionManager : MonoBehaviour
                 break;
         }
     }
+    #endregion
 
+    #region 상점관련
     public void ChangeSlot()
     {
         cStore.Change();
@@ -336,7 +360,7 @@ public class InteractionManager : MonoBehaviour
         if (PlayerStatus.Instance().Gold >= storeSlot.Item.price)
         {
             cGold.SubtractGold(storeSlot.Item.price);
-            cInventory.AddItem(storeSlot.Item);
+            Inventory.Instance.AddItem(storeSlot.Item);
         }
         else if (PlayerStatus.Instance().Gold < storeSlot.Item.price)
         {
@@ -367,5 +391,6 @@ public class InteractionManager : MonoBehaviour
                 break;
         }
     }
+    #endregion
     #endregion
 }

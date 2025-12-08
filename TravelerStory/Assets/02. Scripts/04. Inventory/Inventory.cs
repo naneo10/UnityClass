@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
+    public static Inventory Instance;
+
     #region field
     //리스트에 추가하는 식으로 아이템 획득
     public List<ItemDataSO> items;
@@ -20,7 +22,17 @@ public class Inventory : MonoBehaviour
     #endregion
     void Awake()
     {
-        FreshSlot();
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+            FreshSlot();
     }
 
     #region method
@@ -77,7 +89,7 @@ public class Inventory : MonoBehaviour
         FreshSlot();
     }
 
-    public void SaveItem(InteractionManager interactionManager)
+    public void LoadItem(InteractionManager interactionManager)
     {
         items = interactionManager.SaveItem;
     }

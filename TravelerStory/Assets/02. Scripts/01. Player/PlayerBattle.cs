@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static GameManager;
@@ -107,8 +106,8 @@ public class PlayerBattle : MonoBehaviour
         if (monster.hp <= 0)
         {
             StartCoroutine(EndEnCounter(3.0f));
-            InteractionManager.Instance.changeScene = false; //잠긴 기능 해제
-            interaction.SaveItem = battleInventory.Items;
+            interaction.changeScene = false; //잠긴 기능 해제
+            interaction.SaveInventory(battleInventory.Items);
         }
     }
 

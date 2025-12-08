@@ -28171,8 +28171,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemDataSO: {fileID: 0}
-  cInventory: {fileID: 0}
-  cEquipMent: {fileID: 0}
   cStore: {fileID: 0}
   cGold: {fileID: 0}
   cMonster: {fileID: 0}
